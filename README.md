@@ -39,5 +39,26 @@ A travel agency runs many marketing campaigns across multiple media (newspapers,
 
 ![ERD Diagram](ERD.png)
 
+### Data Generation Process
+
+To populate the database with realistic but synthetic data, I used a prompt-driven approach with ChatGPT. For each table, I wrote a natural-language prompt describing:
+- Table name
+- Fields and their types
+- Constraints (unique IDs, foreign keys, value ranges, correlations)
+ChatGPT then generated CSV files following those rules. Each CSV was downloaded and checked in Excel before being imported into the database.
+I documented this process with screenshots of prompts and results, showing how the data was generated step by step. This ensures transparency in how the synthetic dataset was created.
+
+### Dataset Sizes
+- **Campaigns**: 20 rows
+- **Channels**: 10 rows
+- **Vendors**: 25 rows
+- **CreativeAssets**: 200 rows
+- **Placements**: 1,000 rows
+- **BudgetAllocations**: 20 rows
+- **PerformanceMetrics**: 200,000 rows
+- **Total**: ~201,275 rows across all tables
+
+### Screenshots
+
 
 
