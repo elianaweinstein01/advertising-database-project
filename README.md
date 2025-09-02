@@ -76,10 +76,10 @@ I documented this process with screenshots of prompts and results, showing how t
 ![Placements Prompt](placements_prompt_1.png)
 
 ### BudgetAllocations Prompt
-![BudgetAllocations Prompt](budget_allocations_prompt.png)
+![BudgetAllocations Prompt](budget_allocation_prompt.png)
 
 ### PerformanceMetrics Prompt
-![PerformanceMetrics Prompt](performance_metrics_prompt .png)
+![PerformanceMetrics Prompt](performance_metrics_prompt.png)
 
 
 
