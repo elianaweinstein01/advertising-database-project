@@ -70,16 +70,16 @@ I documented this process with screenshots of prompts and results, showing how t
 ![Vendors Prompt](vendors_prompt.png)
 
 ### CreativeAssets Prompt
-![CreativeAssets Prompt](creativeassets_prompt.png)
+![CreativeAssets Prompt](creative_assets_prompt.png)
 
 ### Placements Prompt
-![Placements Prompt](placements_prompt.png)
+![Placements Prompt](placements_prompt_1.png)
 
 ### BudgetAllocations Prompt
-![BudgetAllocations Prompt](budgetallocations_prompt.png)
+![BudgetAllocations Prompt](budget_allocations_prompt.png)
 
 ### PerformanceMetrics Prompt
-![PerformanceMetrics Prompt](performancemetrics_prompt.png)
+![PerformanceMetrics Prompt](performance_metrics_prompt.png)
 
 
 
