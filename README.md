@@ -70,7 +70,7 @@ I documented this process with screenshots of prompts and results, showing how t
 ![Vendors Prompt](vendors_prompt.png)
 
 ### CreativeAssets Prompt
-![CreativeAssets Prompt](creative_assets_prompt.png)
+![CreativeAssets Prompt](creative_asset_prompt.png)
 
 ### Placements Prompt
 ![Placements Prompt](placements_prompt_1.png)
@@ -79,7 +79,7 @@ I documented this process with screenshots of prompts and results, showing how t
 ![BudgetAllocations Prompt](budget_allocations_prompt.png)
 
 ### PerformanceMetrics Prompt
-![PerformanceMetrics Prompt](performance_metrics_prompt.png)
+![PerformanceMetrics Prompt](performance_metrics_prompt .png)
 
 
 
