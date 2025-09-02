@@ -59,6 +59,13 @@ I documented this process with screenshots of prompts and results, showing how t
 - **Total**: ~201,275 rows across all tables
 
 ### Screenshots
+![Campaign Prompt](screenshots/campaign_prompt.png)
+![Channels Prompt](screenshots/channels_prompt.png)
+![Vendors Prompt](screenshots/vendors_prompt.png)
+![CreativeAssets Prompt](screenshots/creative_asset_prompt.png)
+![Placements Prompt](screenshots/placements_prompt_1.png)
+![BudgetAllocations Prompt](screenshots/budget_allocation_prompt.png)
+![PerformanceMetrics Prompt](screenshots/performance_metrics_prompt.png)
 
 
 
