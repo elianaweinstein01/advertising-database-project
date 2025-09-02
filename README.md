@@ -61,25 +61,25 @@ I documented this process with screenshots of prompts and results, showing how t
 ## Screenshots
 
 ### Campaign Prompt
-![Campaign Prompt](./screenshots/campaign_prompt.png)
+![Campaign Prompt](campaign_prompt.png)
 
 ### Channels Prompt
-![Channels Prompt](./screenshots/channels_prompt.png)
+![Channels Prompt](channels_prompt.png)
 
 ### Vendors Prompt
-![Vendors Prompt](./screenshots/vendors_prompt.png)
+![Vendors Prompt](vendors_prompt.png)
 
 ### CreativeAssets Prompt
-![CreativeAssets Prompt](./screenshots/creativeassets_prompt.png)
+![CreativeAssets Prompt](creativeassets_prompt.png)
 
 ### Placements Prompt
-![Placements Prompt](./screenshots/placements_prompt.png)
+![Placements Prompt](placements_prompt.png)
 
 ### BudgetAllocations Prompt
-![BudgetAllocations Prompt](./screenshots/budgetallocations_prompt.png)
+![BudgetAllocations Prompt](budgetallocations_prompt.png)
 
 ### PerformanceMetrics Prompt
-![PerformanceMetrics Prompt](./screenshots/performancemetrics_prompt.png)
+![PerformanceMetrics Prompt](performancemetrics_prompt.png)
 
 
 
