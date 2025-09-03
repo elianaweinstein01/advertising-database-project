@@ -1,7 +1,7 @@
 \timing on
 -- Q1: Creative assets after a certain date
 PREPARE assets_after_date(date) AS
-SELECT asset_id, asset_name, created_at
+SELECT asset_id, asset_type, created_at
 FROM creative_assets
 WHERE created_at > $1
 ORDER BY created_at;
