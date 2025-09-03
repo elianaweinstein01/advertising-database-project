@@ -28,7 +28,7 @@ OUTLOG="$ROOT_DIR/backupSQL.log"
 echo "→ Running plain text backup into $OUTSQL ..."
 pg_dump -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE" \
   --clean --if-exists --no-owner --no-privileges \
-  --format=plain > "$OUTSQL" 2> "$OUTLOG"
+  --format=plain -v > "$OUTSQL" 2> "$OUTLOG"
 
 echo "Backup completed: $OUTSQL (log: $OUTLOG)"
 

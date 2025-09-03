@@ -1,0 +1,119 @@
+pg_dump: last built-in OID is 16383
+pg_dump: reading extensions
+pg_dump: identifying extension members
+pg_dump: reading schemas
+pg_dump: reading user-defined tables
+pg_dump: reading user-defined functions
+pg_dump: reading user-defined types
+pg_dump: reading procedural languages
+pg_dump: reading user-defined aggregate functions
+pg_dump: reading user-defined operators
+pg_dump: reading user-defined access methods
+pg_dump: reading user-defined operator classes
+pg_dump: reading user-defined operator families
+pg_dump: reading user-defined text search parsers
+pg_dump: reading user-defined text search templates
+pg_dump: reading user-defined text search dictionaries
+pg_dump: reading user-defined text search configurations
+pg_dump: reading user-defined foreign-data wrappers
+pg_dump: reading user-defined foreign servers
+pg_dump: reading default privileges
+pg_dump: reading user-defined collations
+pg_dump: reading user-defined conversions
+pg_dump: reading type casts
+pg_dump: reading transforms
+pg_dump: reading table inheritance information
+pg_dump: reading event triggers
+pg_dump: finding extension tables
+pg_dump: finding inheritance relationships
+pg_dump: reading column info for interesting tables
+pg_dump: finding table default expressions
+pg_dump: finding table check constraints
+pg_dump: flagging inherited columns in subtables
+pg_dump: reading partitioning data
+pg_dump: reading indexes
+pg_dump: flagging indexes in partitioned tables
+pg_dump: reading extended statistics
+pg_dump: reading constraints
+pg_dump: reading triggers
+pg_dump: reading rewrite rules
+pg_dump: reading policies
+pg_dump: reading row-level security policies
+pg_dump: reading publications
+pg_dump: reading publication membership of tables
+pg_dump: reading publication membership of schemas
+pg_dump: reading subscriptions
+pg_dump: reading subscription membership of tables
+pg_dump: reading large objects
+pg_dump: reading dependency data
+pg_dump: saving encoding = UTF8
+pg_dump: saving "standard_conforming_strings = on"
+pg_dump: saving "search_path = "
+pg_dump: saving database definition
+pg_dump: dumping contents of table "public.budget_allocations"
+pg_dump: dumping contents of table "public.campaigns"
+pg_dump: dumping contents of table "public.channels"
+pg_dump: dumping contents of table "public.creative_assets"
+pg_dump: dumping contents of table "public.performance_metrics"
+pg_dump: dumping contents of table "public.placements"
+pg_dump: dumping contents of table "public.vendors"
+pg_restore: connecting to database for restore
+pg_restore: while INITIALIZING:
+pg_restore: error: could not execute query: ERROR:  unrecognized configuration parameter "transaction_timeout"
+Command was: SET transaction_timeout = 0;
+pg_restore: creating SCHEMA "public"
+pg_restore: creating COMMENT "SCHEMA public"
+pg_restore: creating TABLE "public.budget_allocations"
+pg_restore: creating TABLE "public.campaigns"
+pg_restore: creating SEQUENCE "public.campaigns_campaign_id_seq"
+pg_restore: creating SEQUENCE OWNED BY "public.campaigns_campaign_id_seq"
+pg_restore: creating TABLE "public.channels"
+pg_restore: creating SEQUENCE "public.channels_channel_id_seq"
+pg_restore: creating SEQUENCE OWNED BY "public.channels_channel_id_seq"
+pg_restore: creating TABLE "public.creative_assets"
+pg_restore: creating SEQUENCE "public.creative_assets_asset_id_seq"
+pg_restore: creating SEQUENCE OWNED BY "public.creative_assets_asset_id_seq"
+pg_restore: creating TABLE "public.performance_metrics"
+pg_restore: creating SEQUENCE "public.performance_metrics_metric_id_seq"
+pg_restore: creating SEQUENCE OWNED BY "public.performance_metrics_metric_id_seq"
+pg_restore: creating TABLE "public.placements"
+pg_restore: creating SEQUENCE "public.placements_placement_id_seq"
+pg_restore: creating SEQUENCE OWNED BY "public.placements_placement_id_seq"
+pg_restore: creating TABLE "public.vendors"
+pg_restore: creating SEQUENCE "public.vendors_vendor_id_seq"
+pg_restore: creating SEQUENCE OWNED BY "public.vendors_vendor_id_seq"
+pg_restore: creating DEFAULT "public.campaigns campaign_id"
+pg_restore: creating DEFAULT "public.channels channel_id"
+pg_restore: creating DEFAULT "public.creative_assets asset_id"
+pg_restore: creating DEFAULT "public.performance_metrics metric_id"
+pg_restore: creating DEFAULT "public.placements placement_id"
+pg_restore: creating DEFAULT "public.vendors vendor_id"
+pg_restore: processing data for table "public.budget_allocations"
+pg_restore: processing data for table "public.campaigns"
+pg_restore: processing data for table "public.channels"
+pg_restore: processing data for table "public.creative_assets"
+pg_restore: processing data for table "public.performance_metrics"
+pg_restore: processing data for table "public.placements"
+pg_restore: processing data for table "public.vendors"
+pg_restore: executing SEQUENCE SET campaigns_campaign_id_seq
+pg_restore: executing SEQUENCE SET channels_channel_id_seq
+pg_restore: executing SEQUENCE SET creative_assets_asset_id_seq
+pg_restore: executing SEQUENCE SET performance_metrics_metric_id_seq
+pg_restore: executing SEQUENCE SET placements_placement_id_seq
+pg_restore: executing SEQUENCE SET vendors_vendor_id_seq
+pg_restore: creating CONSTRAINT "public.budget_allocations budget_allocations_pkey"
+pg_restore: creating CONSTRAINT "public.campaigns campaigns_pkey"
+pg_restore: creating CONSTRAINT "public.channels channels_pkey"
+pg_restore: creating CONSTRAINT "public.creative_assets creative_assets_pkey"
+pg_restore: creating CONSTRAINT "public.performance_metrics performance_metrics_pkey"
+pg_restore: creating CONSTRAINT "public.performance_metrics performance_metrics_placement_id_stat_date_key"
+pg_restore: creating CONSTRAINT "public.placements placements_pkey"
+pg_restore: creating CONSTRAINT "public.vendors vendors_pkey"
+pg_restore: creating FK CONSTRAINT "public.budget_allocations budget_allocations_campaign_id_fkey"
+pg_restore: creating FK CONSTRAINT "public.performance_metrics performance_metrics_placement_id_fkey"
+pg_restore: creating FK CONSTRAINT "public.placements placements_asset_id_fkey"
+pg_restore: creating FK CONSTRAINT "public.placements placements_campaign_id_fkey"
+pg_restore: creating FK CONSTRAINT "public.placements placements_channel_id_fkey"
+pg_restore: creating FK CONSTRAINT "public.placements placements_vendor_id_fkey"
+pg_restore: creating ACL "SCHEMA public"
+pg_restore: warning: errors ignored on restore: 1

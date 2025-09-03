@@ -1,0 +1,145 @@
+pg_dump: last built-in OID is 16383
+pg_dump: reading extensions
+pg_dump: identifying extension members
+pg_dump: reading schemas
+pg_dump: reading user-defined tables
+pg_dump: reading user-defined functions
+pg_dump: reading user-defined types
+pg_dump: reading procedural languages
+pg_dump: reading user-defined aggregate functions
+pg_dump: reading user-defined operators
+pg_dump: reading user-defined access methods
+pg_dump: reading user-defined operator classes
+pg_dump: reading user-defined operator families
+pg_dump: reading user-defined text search parsers
+pg_dump: reading user-defined text search templates
+pg_dump: reading user-defined text search dictionaries
+pg_dump: reading user-defined text search configurations
+pg_dump: reading user-defined foreign-data wrappers
+pg_dump: reading user-defined foreign servers
+pg_dump: reading default privileges
+pg_dump: reading user-defined collations
+pg_dump: reading user-defined conversions
+pg_dump: reading type casts
+pg_dump: reading transforms
+pg_dump: reading table inheritance information
+pg_dump: reading event triggers
+pg_dump: finding extension tables
+pg_dump: finding inheritance relationships
+pg_dump: reading column info for interesting tables
+pg_dump: finding table default expressions
+pg_dump: finding table check constraints
+pg_dump: flagging inherited columns in subtables
+pg_dump: reading partitioning data
+pg_dump: reading indexes
+pg_dump: flagging indexes in partitioned tables
+pg_dump: reading extended statistics
+pg_dump: reading constraints
+pg_dump: reading triggers
+pg_dump: reading rewrite rules
+pg_dump: reading policies
+pg_dump: reading row-level security policies
+pg_dump: reading publications
+pg_dump: reading publication membership of tables
+pg_dump: reading publication membership of schemas
+pg_dump: reading subscriptions
+pg_dump: reading subscription membership of tables
+pg_dump: reading large objects
+pg_dump: reading dependency data
+pg_dump: saving encoding = UTF8
+pg_dump: saving "standard_conforming_strings = on"
+pg_dump: saving "search_path = "
+pg_dump: dropping FK CONSTRAINT placements placements_vendor_id_fkey
+pg_dump: dropping FK CONSTRAINT placements placements_channel_id_fkey
+pg_dump: dropping FK CONSTRAINT placements placements_campaign_id_fkey
+pg_dump: dropping FK CONSTRAINT placements placements_asset_id_fkey
+pg_dump: dropping FK CONSTRAINT performance_metrics performance_metrics_placement_id_fkey
+pg_dump: dropping FK CONSTRAINT budget_allocations budget_allocations_campaign_id_fkey
+pg_dump: dropping CONSTRAINT vendors vendors_pkey
+pg_dump: dropping CONSTRAINT placements placements_pkey
+pg_dump: dropping CONSTRAINT performance_metrics performance_metrics_placement_id_stat_date_key
+pg_dump: dropping CONSTRAINT performance_metrics performance_metrics_pkey
+pg_dump: dropping CONSTRAINT creative_assets creative_assets_pkey
+pg_dump: dropping CONSTRAINT channels channels_pkey
+pg_dump: dropping CONSTRAINT campaigns campaigns_pkey
+pg_dump: dropping CONSTRAINT budget_allocations budget_allocations_pkey
+pg_dump: dropping DEFAULT vendors vendor_id
+pg_dump: dropping DEFAULT placements placement_id
+pg_dump: dropping DEFAULT performance_metrics metric_id
+pg_dump: dropping DEFAULT creative_assets asset_id
+pg_dump: dropping DEFAULT channels channel_id
+pg_dump: dropping DEFAULT campaigns campaign_id
+pg_dump: dropping SEQUENCE vendors_vendor_id_seq
+pg_dump: dropping TABLE vendors
+pg_dump: dropping SEQUENCE placements_placement_id_seq
+pg_dump: dropping TABLE placements
+pg_dump: dropping SEQUENCE performance_metrics_metric_id_seq
+pg_dump: dropping TABLE performance_metrics
+pg_dump: dropping SEQUENCE creative_assets_asset_id_seq
+pg_dump: dropping TABLE creative_assets
+pg_dump: dropping SEQUENCE channels_channel_id_seq
+pg_dump: dropping TABLE channels
+pg_dump: dropping SEQUENCE campaigns_campaign_id_seq
+pg_dump: dropping TABLE campaigns
+pg_dump: dropping TABLE budget_allocations
+pg_dump: dropping SCHEMA public
+pg_dump: creating SCHEMA "public"
+pg_dump: creating TABLE "public.budget_allocations"
+pg_dump: creating TABLE "public.campaigns"
+pg_dump: creating SEQUENCE "public.campaigns_campaign_id_seq"
+pg_dump: creating SEQUENCE OWNED BY "public.campaigns_campaign_id_seq"
+pg_dump: creating TABLE "public.channels"
+pg_dump: creating SEQUENCE "public.channels_channel_id_seq"
+pg_dump: creating SEQUENCE OWNED BY "public.channels_channel_id_seq"
+pg_dump: creating TABLE "public.creative_assets"
+pg_dump: creating SEQUENCE "public.creative_assets_asset_id_seq"
+pg_dump: creating SEQUENCE OWNED BY "public.creative_assets_asset_id_seq"
+pg_dump: creating TABLE "public.performance_metrics"
+pg_dump: creating SEQUENCE "public.performance_metrics_metric_id_seq"
+pg_dump: creating SEQUENCE OWNED BY "public.performance_metrics_metric_id_seq"
+pg_dump: creating TABLE "public.placements"
+pg_dump: creating SEQUENCE "public.placements_placement_id_seq"
+pg_dump: creating SEQUENCE OWNED BY "public.placements_placement_id_seq"
+pg_dump: creating TABLE "public.vendors"
+pg_dump: creating SEQUENCE "public.vendors_vendor_id_seq"
+pg_dump: creating SEQUENCE OWNED BY "public.vendors_vendor_id_seq"
+pg_dump: creating DEFAULT "public.campaigns campaign_id"
+pg_dump: creating DEFAULT "public.channels channel_id"
+pg_dump: creating DEFAULT "public.creative_assets asset_id"
+pg_dump: creating DEFAULT "public.performance_metrics metric_id"
+pg_dump: creating DEFAULT "public.placements placement_id"
+pg_dump: creating DEFAULT "public.vendors vendor_id"
+pg_dump: processing data for table "public.budget_allocations"
+pg_dump: dumping contents of table "public.budget_allocations"
+pg_dump: processing data for table "public.campaigns"
+pg_dump: dumping contents of table "public.campaigns"
+pg_dump: processing data for table "public.channels"
+pg_dump: dumping contents of table "public.channels"
+pg_dump: processing data for table "public.creative_assets"
+pg_dump: dumping contents of table "public.creative_assets"
+pg_dump: processing data for table "public.performance_metrics"
+pg_dump: dumping contents of table "public.performance_metrics"
+pg_dump: processing data for table "public.placements"
+pg_dump: dumping contents of table "public.placements"
+pg_dump: processing data for table "public.vendors"
+pg_dump: dumping contents of table "public.vendors"
+pg_dump: executing SEQUENCE SET campaigns_campaign_id_seq
+pg_dump: executing SEQUENCE SET channels_channel_id_seq
+pg_dump: executing SEQUENCE SET creative_assets_asset_id_seq
+pg_dump: executing SEQUENCE SET performance_metrics_metric_id_seq
+pg_dump: executing SEQUENCE SET placements_placement_id_seq
+pg_dump: executing SEQUENCE SET vendors_vendor_id_seq
+pg_dump: creating CONSTRAINT "public.budget_allocations budget_allocations_pkey"
+pg_dump: creating CONSTRAINT "public.campaigns campaigns_pkey"
+pg_dump: creating CONSTRAINT "public.channels channels_pkey"
+pg_dump: creating CONSTRAINT "public.creative_assets creative_assets_pkey"
+pg_dump: creating CONSTRAINT "public.performance_metrics performance_metrics_pkey"
+pg_dump: creating CONSTRAINT "public.performance_metrics performance_metrics_placement_id_stat_date_key"
+pg_dump: creating CONSTRAINT "public.placements placements_pkey"
+pg_dump: creating CONSTRAINT "public.vendors vendors_pkey"
+pg_dump: creating FK CONSTRAINT "public.budget_allocations budget_allocations_campaign_id_fkey"
+pg_dump: creating FK CONSTRAINT "public.performance_metrics performance_metrics_placement_id_fkey"
+pg_dump: creating FK CONSTRAINT "public.placements placements_asset_id_fkey"
+pg_dump: creating FK CONSTRAINT "public.placements placements_campaign_id_fkey"
+pg_dump: creating FK CONSTRAINT "public.placements placements_channel_id_fkey"
+pg_dump: creating FK CONSTRAINT "public.placements placements_vendor_id_fkey"
