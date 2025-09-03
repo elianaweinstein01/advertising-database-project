@@ -1,0 +1,29 @@
+Timing is on.
+=== TIMED QUERIES (for backupSQL.log) ===
+ campaigns 
+-----------
+        20
+(1 row)
+
+Time: 24.546 ms
+ placements 
+------------
+       1000
+(1 row)
+
+Time: 1.932 ms
+ perf_rows 
+-----------
+    200000
+(1 row)
+
+Time: 22.183 ms
+ placement_id |   imps   
+--------------+----------
+          134 | 56531579
+          585 | 56195969
+          630 | 55857297
+(3 rows)
+
+Time: 31.156 ms
+Timing is off.

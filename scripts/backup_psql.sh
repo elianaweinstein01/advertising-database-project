@@ -7,13 +7,10 @@ ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"; cd "$ROOT_DIR"
 PGHOST=${PGHOST:-localhost}; PGPORT=${PGPORT:-5432}
 PGUSER=${PGUSER:-postgres};  PGDATABASE=${PGDATABASE:-travel_ads}
 
-OUTSQL="$ROOT_DIR/backupSQL.sql"
-OUTLOG="$ROOT_DIR/backupSQL.log"
+OUTDUMP="$ROOT_DIR/backupPSQL.sql"
+OUTLOG="$ROOT_DIR/backupPSQL.log"
 
-echo "→ Running plain text backup into $OUTSQL ..." | tee -a "$OUTLOG"
+echo "→ Creating custom-format dump: $OUTDUMP" | tee -a "$OUTLOG"
 /usr/bin/time -p pg_dump -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE" \
-  --clean --if-exists --no-owner --no-privileges --format=plain -v \
-  > "$OUTSQL" 2>> "$OUTLOG" | tee -a "$OUTLOG"
-echo "Done." | tee -a "$OUTLOG"
-
-
+  -Fc --no-owner --no-privileges -v -f "$OUTDUMP" 2>> "$OUTLOG"
+echo " Done." | tee -a "$OUTLOG"
