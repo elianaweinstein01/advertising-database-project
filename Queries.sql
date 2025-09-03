@@ -33,6 +33,7 @@ GROUP BY ch.channel_id, ch.channel_name
 ORDER BY impressions DESC;
 
 \echo === Q3 (SELECT): Vendor revenue totals (highest to lowest) ===
+  
 SELECT
   v.vendor_id,
   v.name AS vendor_name,
@@ -56,6 +57,7 @@ ORDER BY pm.stat_date;
 
 \echo === Q5 (UPDATE): Close campaigns that already ended (no changes applied by default) ===
 BEGIN;
+
 UPDATE campaigns
 SET status = 'closed'
 WHERE end_date < CURRENT_DATE
@@ -64,6 +66,7 @@ ROLLBACK;
 
 \echo === Q6 (UPDATE): +5% budget for all ACTIVE campaigns (no changes applied by default) ===
 BEGIN;
+
 UPDATE budget_allocations ba
 SET amount_allocated = ROUND(ba.amount_allocated * 1.05, 2)
 WHERE EXISTS (
@@ -75,18 +78,12 @@ ROLLBACK;
 
 \echo === Q7 (DELETE): Remove perf rows for one placement in a date range (no changes applied) ===
 BEGIN;
-DELETE FROM performance_metrics
-WHERE placement_id = :placement_id
-  AND stat_date >= :start_date::date
-  AND stat_date <= :end_date::date;
-ROLLBACK;
 
-\echo === Q7 (DELETE): Remove perf rows for one placement in a date range (no changes applied) ===
-BEGIN;
 DELETE FROM performance_metrics
-WHERE placement_id = :placement_id
-  AND stat_date >= :start_date::date
-  AND stat_date <= :end_date::date;
+WHERE placement_id = 123   -- example placement
+  AND stat_date >= '2024-01-01'::date
+  AND stat_date <= '2024-01-31'::date;
+
 ROLLBACK;
 
 \echo === Q8 (DELETE): Remove creative assets not used by any placement (no changes applied) ===
