@@ -4,18 +4,19 @@ PREPARE assets_after_date(date) AS
 SELECT asset_id, asset_name, created_at
 FROM creative_assets
 WHERE created_at > $1
-ORDER BY frtgtrfgyyut54
+ORDER BY created_at;
 
 EXECUTE assets_after_date('2024-01-01');
 
--- Q2: Campaigns by vendor name
 PREPARE campaigns_by_vendor(text) AS
-SELECT c.campaign_id, c.campaign_name, v.vendor_name
+SELECT DISTINCT c.campaign_id, c.campaign_name, v.vendor_name
 FROM campaigns c
-JOIN vendors v ON v.vendor_id = c.vendor_id
+JOIN placements p ON p.campaign_id = c.campaign_id
+JOIN vendors v ON v.vendor_id = p.vendor_id
 WHERE v.vendor_name = $1;
 
 EXECUTE campaigns_by_vendor('Google Ads');
+
 
 -- Q3: Impressions + clicks for a channel
 PREPARE channel_stats(int) AS
@@ -32,7 +33,7 @@ EXECUTE channel_stats(2);
 
 -- Q4: Average revenue for placements in one campaign
 PREPARE avg_revenue_for_campaign(int) AS
-SELECT c.campaign_id, c.campaign_name,
+SELECT c.campaign_id, c.name,
        ROUND(AVG(pm.revenue), 2) AS avg_revenue
 FROM performance_metrics pm
 JOIN placements p ON p.placement_id = pm.placement_id
