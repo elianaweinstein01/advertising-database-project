@@ -9,11 +9,11 @@ ORDER BY created_at;
 EXECUTE assets_after_date('2024-01-01');
 
 PREPARE campaigns_by_vendor(text) AS
-SELECT DISTINCT c.campaign_id, c.campaign_name, v.vendor_name
+SELECT DISTINCT c.campaign_id, c.name, v.name
 FROM campaigns c
 JOIN placements p ON p.campaign_id = c.campaign_id
 JOIN vendors v ON v.vendor_id = p.vendor_id
-WHERE v.vendor_name = $1;
+WHERE v.name = $1;
 
 EXECUTE campaigns_by_vendor('Google Ads');
 
@@ -39,7 +39,7 @@ FROM performance_metrics pm
 JOIN placements p ON p.placement_id = pm.placement_id
 JOIN campaigns c ON c.campaign_id = p.campaign_id
 WHERE c.campaign_id = $1
-GROUP BY c.campaign_id, c.campaign_name;
+GROUP BY c.campaign_id, c.name;
 
 EXECUTE avg_revenue_for_campaign(5);
 \timing off
