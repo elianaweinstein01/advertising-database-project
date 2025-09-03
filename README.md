@@ -87,6 +87,25 @@ I documented this process with screenshots of prompts and results, showing how t
 ![Dump Screenshots](dump_ss_3.png)
 ![Dump Screenshots](dump_ss_2.png)
 
+### Stage 2 – Backups and Restore
+
+In this stage, I prepared scripts to back up and restore the PostgreSQL database.
+
+1. Plain SQL Backup
+- Command: ./scripts/backup_sql.sh
+- Output file: backupSQL.sql
+- Log file: backupSQL.log (includes pg_dump output and timing statistics)
+
+2. Custom Format Backup & Restore
+- Command: ./scripts/backup_psql.sh
+- Output file: backupPSQL.sql
+- Log file: backupPSQL.log (includes pg_dump output and timing statistics)
+
+Restore tested with: 
+- DROP SCHEMA public CASCADE;
+- CREATE SCHEMA public;
+- ./scripts/restore_psql.sh
+
 
 
 
