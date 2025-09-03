@@ -8,6 +8,8 @@ ORDER BY created_at;
 
 EXECUTE assets_after_date('2024-01-01');
 
+
+-- Q2: Impressions + clicks for a channel
 PREPARE campaigns_by_vendor(text) AS
 SELECT DISTINCT c.campaign_id, c.name, v.name
 FROM campaigns c
