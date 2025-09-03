@@ -1,0 +1,26 @@
+vendor_id,name,contact_name,email,phone,billing_terms
+1,Haaretz Newspaper,Miriam Cohen,miriam.cohen@haaretz.co.il,+972-3-5123456,NET30
+2,The Jerusalem Times,David Levy,david.levy@jtimes.co.il,+972-2-6123456,NET45
+3,Meta Ads (Facebook),Sarah Kaplan,sarah.kaplan@meta.com,+1-650-5432100,PREPAID
+4,Google Ads,John Smith,john.smith@google.com,+1-650-5551212,NET30
+5,TikTok Marketing,Li Wei,li.wei@tiktok.com,+86-755-123456,PREPAID
+6,Yedioth Ahronoth,Noa Ben-Ami,noa.benami@yedioth.co.il,+972-3-9876543,NET60
+7,TripAd Marketing,Emily Brown,emily.brown@tripad.com,+44-20-7946123,NET30
+8,YouTube Ads,Michael Green,michael.green@youtube.com,+1-415-4447788,NET15
+9,Israel Radio Network,Yael Shahar,yael.shahar@radioil.co.il,+972-9-7765432,NET30
+10,Expedia Partner Media,Tom Johnson,tom.johnson@expedia.com,+1-425-5553434,NET30
+11,Booking.com Ads,Anna Vermeer,anna.vermeer@booking.com,+31-20-1234567,NET45
+12,Skyscanner Promotions,Peter Wong,peter.wong@skyscanner.com,+44-131-654321,NET30
+13,Kayak Media,Laura Rossi,laura.rossi@kayak.com,+39-02-9876543,NET30
+14,TripAdvisor Ads,Daniel Morris,daniel.morris@tripadvisor.com,+1-617-5559988,NET15
+15,Orbitz Marketing,Sophia Kim,sophia.kim@orbitz.com,+1-312-5556677,NET30
+16,El Al Airlines Media,Ronen Adler,ronen.adler@elal.co.il,+972-3-9751111,NET60
+17,Arkia Marketing,Leah Mizrahi,leah.mizrahi@arkia.co.il,+972-3-6902222,NET30
+18,EasyJet Ads,Oliver White,oliver.white@easyjet.com,+44-1582-987654,PREPAID
+19,Ryanair Media,Patrick O'Brien,patrick.obrien@ryanair.com,+353-1-5552222,NET30
+20,Wizz Air Promotions,Katalin Nagy,katalin.nagy@wizzair.com,+36-1-5553333,NET30
+21,Etihad Airways Media,Ahmed Al Mansoori,ahmed.mansoori@etihad.com,+971-2-5554444,NET45
+22,Emirates Ads,Fatima Noor,fatima.noor@emirates.com,+971-4-5551111,NET30
+23,Turkish Airlines Media,Mehmet Kaya,mehmet.kaya@thy.com,+90-212-5551234,NET30
+24,Delta Airlines Ads,James Carter,james.carter@delta.com,+1-404-5552121,NET30
+25,United Airlines Marketing,Rachel Lee,rachel.lee@united.com,+1-872-5553333,NET60

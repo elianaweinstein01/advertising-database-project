@@ -1,0 +1,21 @@
+campaign_id,name,objective,status,start_date,end_date,ramp_up_phase,season,target_region
+1,Holy Land Heritage Tour,Increase bookings,active,2024-01-16,2024-04-15,TRUE,Summer,Asia
+2,Discover the Alps – Winter Ski Season,Brand awareness,active,2024-01-31,2024-04-30,FALSE,Summer,Israel
+3,Summer Escape Greece 2025,Promote packages,planned,2024-02-15,2024-05-15,FALSE,Winter,North America
+4,Mediterranean Cruise Specials,Promote packages,active,2024-03-01,2024-05-30,TRUE,Summer,North America
+5,Family Fun in Eilat,Increase bookings,active,2024-03-16,2024-06-14,TRUE,Fall,Israel
+6,Romantic Paris Getaway,Promote packages,active,2024-03-31,2024-06-29,TRUE,Winter,Israel
+7,Cherry Blossom Japan Tour,Seasonal sales,paused,2024-04-15,2024-07-14,TRUE,Summer,Asia
+8,Explore Italy’s Wine Country,Increase bookings,active,2024-04-30,2024-07-29,TRUE,Spring,Israel
+9,Adventure Awaits in South America,Brand awareness,active,2024-05-15,2024-08-13,FALSE,Summer,Europe
+10,Island Hopping Thailand,Increase bookings,planned,2024-05-30,2024-08-28,FALSE,Summer,Europe
+11,Fall Colors in New England,Brand awareness,active,2024-06-14,2024-09-12,TRUE,Fall,Asia
+12,Safari Experience Kenya,Increase bookings,paused,2024-06-29,2024-09-27,FALSE,Winter,Europe
+13,Dubai Luxury Shopping Festival,Seasonal sales,active,2024-07-14,2024-10-12,FALSE,Fall,North America
+14,Northern Lights Iceland Adventure,Increase bookings,closed,2024-07-29,2024-10-27,FALSE,Spring,Europe
+15,Backpacking the Balkans,Brand awareness,active,2024-08-13,2024-11-11,TRUE,Summer,Asia
+16,Pilgrimage to Jerusalem,Promote packages,closed,2024-08-28,2024-11-26,FALSE,Fall,North America
+17,Summer in Spain – Barcelona & Madrid,Promote packages,paused,2024-09-12,2024-12-11,FALSE,Summer,Asia
+18,Canadian Rockies Explorer,Promote packages,closed,2024-09-27,2024-12-26,TRUE,Fall,Asia
+19,Ancient Wonders of Egypt,Seasonal sales,paused,2024-10-12,2025-01-10,TRUE,Winter,Israel
+20,Scandinavia Midnight Sun Tour,Increase bookings,active,2024-10-27,2025-01-25,TRUE,Fall,North America
