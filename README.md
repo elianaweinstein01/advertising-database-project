@@ -1,7 +1,8 @@
 # advertising-database-project
 My project for my mini project in database systems class
 
-## Proposal
+## Stage 1: 
+### Proposal
 
 ### Problem & Goal
 A travel agency runs many marketing campaigns across multiple media (newspapers, web, social, email). Each campaign can use several vendors and creatives, must stay within a budget, and needs performance tracking to see which spend actually drives bookings.  
@@ -87,7 +88,7 @@ I documented this process with screenshots of prompts and results, showing how t
 ![Dump Screenshots](dump_ss_3.png)
 ![Dump Screenshots](dump_ss_2.png)
 
-### Stage 2
+## Stage 2
 
 ### Backups and Restore
 
@@ -167,6 +168,28 @@ I also wrote four parameterized queries to demonstrate dynamic query execution w
 - queries.log: output log of creation.
 - ParamQueries.sql: creation of queries with parameters.
 - ParamQueries.log: output log of creation.
+
+### Indexing & Query Performance Phase
+I identified three queries from my project that could benefit from indexes:
+- Q1 (Top campaigns by revenue)
+- Q2 (CTR by channel)
+- Q3 (Vendor revenue totals)
+These queries involve joins and grouping, which are often slow on large datasets without indexes.
+I created three custom indexes in Constraints.sql:
+- ***performance_metrics(placement_id, stat_date)*** → speeds joins & date filters (Q1, Q4, Q7).
+- ***placements(campaign_id)*** → speeds filtering/grouping by campaign (Q1, Q4).
+- ***placements(channel_id, vendor_id)*** → speeds grouping & joins by channel/vendor (Q2, Q3).
+- These were chosen because primary keys are already indexed automatically, so I focused on foreign keys and join columns, as recommended in class.
+- I used ***\timing on*** in PostgreSQL to measure execution times before and after adding indexes.
+
+### How I Measured
+- Ran ***Queries.sql*** first (without my custom indexes): "psql -h localhost -p 5432 -U postgres -d travel_ads -f Queries.sql > Queries.log 2>&1"
+- Logged results into ***Queries.log***.
+- Then ran ***Constraints.sql*** to create indexes: "psql -h localhost -p 5432 -U postgres -d travel_ads -f Constraints.sql > Constraints.log 2>&1"
+- Logged results into ***Constraints.log***
+- Re-ran queries into ***Queries_after_index.log***: "psql -h localhost -p 5432 -U postgres -d travel_ads -f Queries.sql > Queries_after_index.log 2>&1"
+- Used grep to extract query times for easy comparison
+![Before and After Screenshots](beforeandafter.png)
   
 
 ### Constraints 
