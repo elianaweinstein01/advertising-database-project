@@ -87,7 +87,9 @@ I documented this process with screenshots of prompts and results, showing how t
 ![Dump Screenshots](dump_ss_3.png)
 ![Dump Screenshots](dump_ss_2.png)
 
-### Stage 2 – Backups and Restore
+### Stage 2
+
+### Backups and Restore
 
 In this stage, I prepared scripts to back up and restore the PostgreSQL database.
 
@@ -130,7 +132,7 @@ In this stage of the project, I strengthened the database schema by adding ancil
 ### 5) Performance Metrics
 - chk_nonnegative_metrics: Ensures all numeric statistics (impressions, clicks, revenue, etc.) are nonnegative.
 
-  ### Step 2: For each constraint, I wrote queries that deliberately fail:
+### Step 2: For each constraint, I wrote queries that deliberately fail:
 
 - Campaign with end_date before start_date → violates chk_campaign_dates.
 - Vendor with invalid email → violates chk_vendor_email.
@@ -145,13 +147,24 @@ In this stage of the project, I strengthened the database schema by adding ancil
 
 ### Step 3: Captured Logs:
 - I ran the script using: psql -h localhost -p 5432 -U postgres -d travel_ads -f Constraints.sql 2>&1 | tee constraints.log
+- ![Constraints Screenshots](constraints-sc-1.png)
 - This produced a log file (constraints.log) with both commands and error messages.
+- ![Constraints Screenshots](constraints-cs-2.png)
+
+## ERROR and message explanations (from constraints.log)
+- ALTER TABLE (multiple lines)
+Meaning: All constraint DDL statements executed successfully (no errors here).
+- psql:Constraints.sql:89: ERROR: new row for relation "relation" violates check constraint "chk_constraint" (multiple times).
+Meaning: the constraints that I added were violated (intentionally)
+- INSERT 0 1 (right after the above)
+Meaning: The setup campaign for the budget tests inserted successfully.
+- DELETE 1
+Meaning: Cleanup delete of the test campaign succeeded (and cascades ran as defined).
+### All failing statements intentionally triggered the new CHECK constraints, confirming they work; setup/cleanup statements behaved correctly, including cascade deletes.
 
 ### Files
 - Constraints.sql: Contains all ALTER TABLE statements and test queries.
 - constraints.log: Log file capturing all inputs and outputs.
-![Constraints Screenshots](constraints-sc-1.png)
-![Constraints Screenshots](constraints-sc-2.png)
 
 
 
