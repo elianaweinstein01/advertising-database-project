@@ -68,6 +68,10 @@ ALTER TABLE budget_allocations
   ADD CONSTRAINT chk_currency_format
   CHECK (currency ~ '^[A-Z]{3}$') NOT VALID;
 
+ALTER TABLE budget_allocations
+  DROP CONSTRAINT IF EXISTS chk_budget_positive,
+  ADD CONSTRAINT chk_budget_positive
+  CHECK (amount_allocated >= 0) NOT VALID;
 
 ALTER TABLE performance_metrics
   DROP CONSTRAINT IF EXISTS chk_nonnegative_metrics,
@@ -83,30 +87,32 @@ ALTER TABLE performance_metrics
 -- (1) Campaign end date before start date → should FAIL
 INSERT INTO campaigns (campaign_id, name, objective, status, start_date, end_date)
 VALUES (DEFAULT, 'Bad Campaign', 'Test', 'active', '2025-09-10', '2025-09-01');
--- Expect: ERROR:  new row violates check constraint "chk_campaign_dates"
+-- Expect: ERROR: new row for relation "campaigns" violates check constraint "chk_campaign_dates"
 
 -- (2) Vendor email missing "@" → should FAIL
 INSERT INTO vendors (vendor_id, name, email) VALUES (DEFAULT, 'VendorX', 'bademail.com');
--- Expect: ERROR:  new row violates check constraint "chk_vendor_email"
+-- Expect: ERROR:  new row for relation "vendors" violates check constraint "chk_vendor_email"
 
 -- (3) Video with duration 0
 INSERT INTO creative_assets
 (asset_id, asset_type, title, url_or_path, dimensions, duration_sec, created_at, compliance_ok)
 VALUES
 (DEFAULT, 'video', 'Broken Video', 'http://example.com/fail.mp4', '1920x1080', 0, CURRENT_TIMESTAMP, TRUE);
--- Expect: ERROR:  violates check constraint "chk_asset_duration"
+-- Expect: ERROR: new row for relation "creative_assets" violates check constraint "chk_asset_duration"
 
 -- (4) image with invalid duration (only videos can have duration) → should FAIL
 INSERT INTO creative_assets
 (asset_id, asset_type, title, url_or_path, dimensions, duration_sec, created_at, compliance_ok)
 VALUES
 (DEFAULT, 'image', 'Broken Image', 'http://example.com/fail.jpg', '800x600', 45, DEFAULT, DEFAULT);
+-- Expect: ERROR:  new row for relation "creative_assets" violates check constraint "chk_asset_duration"
 
 -- (5) invalid creative_assets dimensions 
 INSERT INTO creative_assets
 (asset_id, asset_type, title, url_or_path, dimensions, duration_sec, created_at, compliance_ok)
 VALUES
 (DEFAULT, 'image', 'Bad Dimensions', 'http://example.com/img.jpg', '1920*1080', NULL, DEFAULT, DEFAULT);
+-- Expect: ERROR:  new row for relation "creative_assets" violates check constraint "chk_dimensions_format"
 
 -- (6) Budget with negative amount → should FAIL
 INSERT INTO campaigns (campaign_id, name, objective, status, start_date, end_date)
@@ -119,7 +125,7 @@ VALUES (currval('campaigns_campaign_id_seq'), -500, 'USD');
 -- (7) Budget with invalid currency format → should FAIL
 INSERT INTO budget_allocations (campaign_id, amount_allocated, currency)
 VALUES (currval('campaigns_campaign_id_seq'), 1000, 'usd');
--- Expect: ERROR:  violates check constraint "chk_currency_format"
+-- Expect: ERROR: new row for relation "budget_allocations" violates check constraint "chk_currency_format"
 
 -- Clean up
 DELETE FROM campaigns
