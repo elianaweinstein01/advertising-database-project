@@ -33,38 +33,50 @@ ANALYZE;
 
 \timing off
 
+SELECT setval('campaigns_campaign_id_seq',       COALESCE((SELECT MAX(campaign_id)  FROM campaigns), 0), true);
+SELECT setval('channels_channel_id_seq',         COALESCE((SELECT MAX(channel_id)   FROM channels), 0), true);
+SELECT setval('vendors_vendor_id_seq',           COALESCE((SELECT MAX(vendor_id)    FROM vendors), 0), true);
+SELECT setval('creative_assets_asset_id_seq',    COALESCE((SELECT MAX(asset_id)     FROM creative_assets), 0), true);
+SELECT setval('placements_placement_id_seq',     COALESCE((SELECT MAX(placement_id) FROM placements), 0), true);
+SELECT setval('performance_metrics_metric_id_seq',COALESCE((SELECT MAX(metric_id)   FROM performance_metrics), 0), true);
+
+
 ALTER TABLE campaigns
+  DROP CONSTRAINT IF EXISTS chk_campaign_dates,
   ADD CONSTRAINT chk_campaign_dates CHECK (end_date >= start_date);
 
 ALTER TABLE vendors
   DROP CONSTRAINT IF EXISTS chk_vendor_email,
   ADD CONSTRAINT chk_vendor_email
-  CHECK (
-    email ~ '^[^@[:space:]]+@[^@[:space:]]+[.][^@[:space:]]+$'
-  );
+  CHECK (email ~ '^[^@[:space:]]+@[^@[:space:]]+[.][^@[:space:]]+$') NOT VALID;
 
 ALTER TABLE creative_assets
+  DROP CONSTRAINT IF EXISTS chk_asset_duration,
   ADD CONSTRAINT chk_asset_duration
   CHECK (
     (asset_type = 'video' AND duration_sec > 0)
     OR (asset_type <> 'video' AND duration_sec IS NULL)
-  );
+  ) NOT VALID;
 
 ALTER TABLE creative_assets
+  DROP CONSTRAINT IF EXISTS chk_dimensions_format,
   ADD CONSTRAINT chk_dimensions_format
-  CHECK (dimensions ~ '^[0-9]+x[0-9]+$' OR dimensions IS NULL);
+  CHECK (dimensions ~ '^[1-9][0-9]*x[1-9][0-9]*$' OR dimensions IS NULL);
 
 ALTER TABLE budget_allocations
   DROP CONSTRAINT IF EXISTS chk_currency_format,
   ADD CONSTRAINT chk_currency_format
-  CHECK (currency ~ '^[A-Z]{3}$');
+  CHECK (currency ~ '^[A-Z]{3}$') NOT VALID;
+
 
 ALTER TABLE performance_metrics
-  ADD CONSTRAINT chk_nonnegative_metrics CHECK (
+  DROP CONSTRAINT IF EXISTS chk_nonnegative_metrics,
+  ADD CONSTRAINT chk_nonnegative_metrics
+  CHECK (
     impressions >= 0 AND clicks >= 0 AND engagements >= 0
     AND reach >= 0 AND booking_requests >= 0
     AND confirmed_bookings >= 0 AND revenue >= 0
-  );
+  ) NOT VALID;
 
 -- Test Queries
 
