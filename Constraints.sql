@@ -120,7 +120,7 @@ VALUES (DEFAULT, 'Test Campaign', 'Test', 'active', '2025-09-10', '2025-09-30');
 
 INSERT INTO budget_allocations (campaign_id, amount_allocated, currency)
 VALUES (currval('campaigns_campaign_id_seq'), -500, 'USD');
--- Expect: ERROR:  violates check constraint "chk_budget_positive"
+-- Expect: ERROR:  new row for relation "budget_allocations" violates check constraint "chk_budget_positive"
 
 -- (7) Budget with invalid currency format → should FAIL
 INSERT INTO budget_allocations (campaign_id, amount_allocated, currency)
@@ -134,11 +134,11 @@ WHERE campaign_id = currval('campaigns_campaign_id_seq');
 -- (8) Performance metrics with negative clicks → should FAIL
 INSERT INTO performance_metrics (metric_id, stat_date, placement_id, impressions, clicks, revenue)
 VALUES (DEFAULT, '2025-09-07', 1, 100, -5, 100.00);
--- Expect: ERROR:  violates check constraint "chk_nonnegative_metrics"
+-- Expect: ERROR:  ERROR:  new row for relation "performance_metrics" violates check constraint "chk_nonnegative_metrics"
 
 -- (9) UPDATE vendor to invalid email → should FAIL
 UPDATE vendors SET email = 'invalid' WHERE vendor_id = 1;
--- Expect: ERROR:  new row violates check constraint "chk_vendor_email"
+-- Expect: ERROR:  new row for relation "vendors" violates check constraint "chk_vendor_email"
 
 -- (11) DELETE campaign with placements → should CASCADE
 -- First insert valid campaign, placement, then delete campaign.
