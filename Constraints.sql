@@ -32,3 +32,118 @@ CREATE INDEX IF NOT EXISTS idx_pl_channel_vendor
 ANALYZE;
 
 \timing off
+
+ALTER TABLE campaigns
+  ADD CONSTRAINT chk_campaign_dates CHECK (end_date >= start_date);
+
+ALTER TABLE vendors
+  DROP CONSTRAINT IF EXISTS chk_vendor_email,
+  ADD CONSTRAINT chk_vendor_email
+  CHECK (
+    email ~ '^[^@[:space:]]+@[^@[:space:]]+[.][^@[:space:]]+$'
+  );
+
+ALTER TABLE creative_assets
+  ADD CONSTRAINT chk_asset_duration
+  CHECK (
+    (asset_type = 'video' AND duration_sec > 0)
+    OR (asset_type <> 'video' AND duration_sec IS NULL)
+  );
+
+ALTER TABLE creative_assets
+  ADD CONSTRAINT chk_dimensions_format
+  CHECK (dimensions ~ '^[0-9]+x[0-9]+$' OR dimensions IS NULL);
+
+ALTER TABLE budget_allocations
+  DROP CONSTRAINT IF EXISTS chk_currency_format,
+  ADD CONSTRAINT chk_currency_format
+  CHECK (currency ~ '^[A-Z]{3}$');
+
+ALTER TABLE performance_metrics
+  ADD CONSTRAINT chk_nonnegative_metrics CHECK (
+    impressions >= 0 AND clicks >= 0 AND engagements >= 0
+    AND reach >= 0 AND booking_requests >= 0
+    AND confirmed_bookings >= 0 AND revenue >= 0
+  );
+
+-- Test Queries
+
+-- (1) Campaign end date before start date → should FAIL
+INSERT INTO campaigns (campaign_id, name, objective, status, start_date, end_date)
+VALUES (DEFAULT, 'Bad Campaign', 'Test', 'active', '2025-09-10', '2025-09-01');
+-- Expect: ERROR:  new row violates check constraint "chk_campaign_dates"
+
+-- (2) Vendor email missing "@" → should FAIL
+INSERT INTO vendors (vendor_id, name, email) VALUES (DEFAULT, 'VendorX', 'bademail.com');
+-- Expect: ERROR:  new row violates check constraint "chk_vendor_email"
+
+-- (3) Video with duration 0
+INSERT INTO creative_assets
+(asset_id, asset_type, title, url_or_path, dimensions, duration_sec, created_at, compliance_ok)
+VALUES
+(DEFAULT, 'video', 'Broken Video', 'http://example.com/fail.mp4', '1920x1080', 0, CURRENT_TIMESTAMP, TRUE);
+-- Expect: ERROR:  violates check constraint "chk_asset_duration"
+
+-- (4) image with invalid duration (only videos can have duration) → should FAIL
+INSERT INTO creative_assets
+(asset_id, asset_type, title, url_or_path, dimensions, duration_sec, created_at, compliance_ok)
+VALUES
+(DEFAULT, 'image', 'Broken Image', 'http://example.com/fail.jpg', '800x600', 45, DEFAULT, DEFAULT);
+
+-- (5) invalid creative_assets dimensions 
+INSERT INTO creative_assets
+(asset_id, asset_type, title, url_or_path, dimensions, duration_sec, created_at, compliance_ok)
+VALUES
+(DEFAULT, 'image', 'Bad Dimensions', 'http://example.com/img.jpg', '1920*1080', NULL, DEFAULT, DEFAULT);
+
+-- (6) Budget with negative amount → should FAIL
+INSERT INTO campaigns (campaign_id, name, objective, status, start_date, end_date)
+VALUES (DEFAULT, 'Test Campaign', 'Test', 'active', '2025-09-10', '2025-09-30');
+
+INSERT INTO budget_allocations (campaign_id, amount_allocated, currency)
+VALUES (currval('campaigns_campaign_id_seq'), -500, 'USD');
+-- Expect: ERROR:  violates check constraint "chk_budget_positive"
+
+-- (7) Budget with invalid currency format → should FAIL
+INSERT INTO budget_allocations (campaign_id, amount_allocated, currency)
+VALUES (currval('campaigns_campaign_id_seq'), 1000, 'usd');
+-- Expect: ERROR:  violates check constraint "chk_currency_format"
+
+-- Clean up
+DELETE FROM campaigns
+WHERE campaign_id = currval('campaigns_campaign_id_seq');
+
+-- (8) Performance metrics with negative clicks → should FAIL
+INSERT INTO performance_metrics (metric_id, stat_date, placement_id, impressions, clicks, revenue)
+VALUES (DEFAULT, '2025-09-07', 1, 100, -5, 100.00);
+-- Expect: ERROR:  violates check constraint "chk_nonnegative_metrics"
+
+-- (9) UPDATE vendor to invalid email → should FAIL
+UPDATE vendors SET email = 'invalid' WHERE vendor_id = 1;
+-- Expect: ERROR:  new row violates check constraint "chk_vendor_email"
+
+-- (11) DELETE campaign with placements → should CASCADE
+-- First insert valid campaign, placement, then delete campaign.
+INSERT INTO campaigns (campaign_id, name, objective, status, start_date, end_date)
+VALUES (DEFAULT, 'Cascade Campaign', 'Cascade Test', 'active', '2025-09-01', '2025-09-15');
+
+INSERT INTO channels (channel_id, channel_name, rate_model)
+VALUES (DEFAULT, 'Test Channel', 'CPM');
+
+INSERT INTO vendors (vendor_id, name, email)
+VALUES (DEFAULT, 'Cascade Vendor', 'cascade@example.com');
+
+INSERT INTO creative_assets (asset_id, asset_type, title)
+VALUES (DEFAULT, 'image', 'Cascade Image');
+
+-- Insert placement tied to Cascade Campaign
+INSERT INTO placements (placement_id, campaign_id, channel_id, vendor_id, asset_id, flight_start, flight_end)
+VALUES (DEFAULT, currval('campaigns_campaign_id_seq'), currval('channels_channel_id_seq'),
+        currval('vendors_vendor_id_seq'), currval('creative_assets_asset_id_seq'),
+        '2025-09-01', '2025-09-10');
+
+-- Now delete the campaign → placements should auto-delete
+DELETE FROM campaigns WHERE name = 'Cascade Campaign';
+-- Expect: placements referencing this campaign are also deleted (ON DELETE CASCADE)
+
+
