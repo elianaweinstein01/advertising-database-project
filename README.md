@@ -108,6 +108,66 @@ Restore tested with:
 - CREATE SCHEMA public;
 - ./scripts/restore_psql.sh
 
+### Queries and Parameterized Queries
+This section documents the user-driven queries written for the database inlcuding joins, aggregates, grouping, ordering, subqueries, and constraints. 
+
+### Queries.sql
+I wrote eight queries that reflect user needs: four SELECT, two UPDATE, and two DELETE. Each query was written, executed, and timed using \timing on. Updates and deletes were wrapped in BEGIN … ROLLBACK so they could be tested safely without altering the data.
+
+### SELECT Queries
+### 1) Top 5 campaigns by total revenue
+- Aggregates revenue per campaign across placements and performance metrics.
+- Groups by campaign and orders by revenue descending.
+- Business need: Management wants to quickly see which campaigns are the most profitable.
+### 2) Impressions, clicks, and CTR by channel
+- Summarizes impressions and clicks by channel, computes CTR (click-through rate).
+- Uses NULLIF to prevent division by zero errors.
+- Business need: Marketing team monitors effectiveness of each channel.
+### 3) Vendor revenue totals (ranked highest to lowest)
+- Groups revenue by vendor to see which vendors deliver the most return.
+- Business need: Vendor management decisions (contract renewals, scaling partnerships).
+### 4) Daily confirmed bookings for one campaign
+- Groups daily confirmed bookings for a single campaign (parameterized with campaign_id).
+- Business need: Track booking performance trends over time for a given campaign.
+  
+### UPDATE Queries
+### 5) Close campaigns that already ended
+- Sets status = 'closed' where end_date < CURRENT_DATE.
+- Ensures campaigns don’t remain active beyond their intended run.
+### 6) Increase budget by +5% for active campaigns
+- Finds active campaigns and applies a 5% budget increase to their allocations.
+
+### DELETE Queries
+### 7) Remove performance metrics for one placement in a date range
+- Deletes all metrics for a given placement within a specific month.
+### 8) Transaction rolled back.
+- Remove creative assets not tied to any placement
+- Helps prevent storage bloat from unused assets.
+
+### ParamQueries.sql
+I also wrote four parameterized queries to demonstrate dynamic query execution with PREPARE and EXECUTE. Each query uses joins, grouping, and aggregates.
+
+### 1) Creative assets created after a given date
+- Lists assets newer than a parameterized date.
+- Ordered by creation time for easy review.
+- Example input: 2024-01-01.
+### 2) Campaigns by vendor name
+- Finds campaigns linked to a specific vendor.
+- Example input: 'Google Ads'.
+### 3) Impressions + clicks for a channel
+- Summarizes performance for one channel by ID.
+- Example input: channel_id = 2.
+### 4) Average revenue per placement for a campaign
+- Aggregates revenue at placement level and averages across a campaign.
+- Example input: campaign_id = 5.
+- Helps determine revenue consistency within campaigns.
+
+### Files:
+- Queries.sql: creation of queries.
+- queries.log: output log of creation.
+- ParamQueries.sql: creation of queries with parameters.
+- ParamQueries.log: output log of creation.
+  
 
 ### Constraints 
 
