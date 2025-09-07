@@ -8,11 +8,11 @@
 /******************************************************************
  * Indexes we create (safe with IF NOT EXISTS):
  * 1) performance_metrics(placement_id, stat_date)
- *    - Speeds joins by placement and date filters (Q2, Q3).
+ *    - Speeds joins by placement and date filters (Q1, Q4, Q7).
  * 2) placements(campaign_id)
- *    - Speeds filtering placements by campaign (Q2).
+ *    - Speeds filtering placements by campaign (Q1, Q4).
  * 3) placements(channel_id, vendor_id)
- *    - Speeds channel/vendor grouping & joins (Q1).
+ *    - Speeds channel/vendor grouping & joins (Q2, Q3).
  ******************************************************************/
 \echo
 \echo --- Creating / ensuring indexes exist ---
