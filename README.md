@@ -107,6 +107,55 @@ Restore tested with:
 - ./scripts/restore_psql.sh
 
 
+### Constraints 
+
+In this stage of the project, I strengthened the database schema by adding ancillary constraints using ALTER TABLE. These constraints ensure data integrity beyond just primary and foreign keys. I then wrote test queries (INSERT, UPDATE, DELETE) that intentionally violate the constraints to confirm they are enforced. Finally, I captured all inputs and outputs (including error messages) into a log file for documentation (constraints.log).
+
+### Step 1: I added the following constraints across multiple tables:
+
+### 1) Campaigns
+- chk_campaign_dates: Ensures end_date >= start_date.
+
+### 2) Vendors
+- chk_vendor_email: Validates email format with regex.
+
+### 3) Creative Assets
+- chk_asset_duration: Only videos can have a positive duration, all other asset types must have NULL.
+- chk_dimensions_format: Ensures dimensions are in WIDTHxHEIGHT format (e.g., 1920x1080) with nonzero values.
+
+### 4) Budget Allocations
+- chk_budget_positive: Ensures allocated budget is greater than 0.
+- chk_currency_format: Enforces three uppercase letters (e.g., USD, ILS) for currency codes.
+
+### 5) Performance Metrics
+- chk_nonnegative_metrics: Ensures all numeric statistics (impressions, clicks, revenue, etc.) are nonnegative.
+
+  ### Step 2: For each constraint, I wrote queries that deliberately fail:
+
+- Campaign with end_date before start_date → violates chk_campaign_dates.
+- Vendor with invalid email → violates chk_vendor_email.
+- Video asset with duration = 0 → violates chk_asset_duration.
+- Image asset with duration → violates chk_asset_duration.
+- Creative asset with invalid dimensions (1920*1080) → violates chk_dimensions_format.
+- Negative budget allocation → violates chk_budget_positive.
+- Currency not uppercase (usd) → violates chk_currency_format.
+- Negative clicks in performance metrics → violates chk_nonnegative_metrics.
+- Update vendor email to invalid string → violates chk_vendor_email.
+- Cascade delete test: Inserted a campaign with related placement, then deleted the campaign to confirm that placements were automatically deleted (ON DELETE CASCADE).
+
+### Step 3: Captured Logs:
+- I ran the script using: psql -h localhost -p 5432 -U postgres -d travel_ads -f Constraints.sql 2>&1 | tee constraints.log
+- This produced a log file (constraints.log) with both commands and error messages.
+
+### Files
+- Constraints.sql: Contains all ALTER TABLE statements and test queries.
+- constraints.log: Log file capturing all inputs and outputs.
+![Constraints Screenshots](constraints-sc-1.png)
+![Constraints Screenshots](constraints-sc-2.png)
+
+
+
+
 
 
 
