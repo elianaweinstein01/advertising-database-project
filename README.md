@@ -40,7 +40,7 @@ A travel agency runs many marketing campaigns across multiple media (newspapers,
 
 ![ERD Diagram](ERD.png)
 
-### Data Generation Process
+## Data Generation Process
 
 To populate the database with realistic but synthetic data, I used a prompt-driven approach with ChatGPT. For each table, I wrote a natural-language prompt describing:
 - Table name
@@ -82,34 +82,52 @@ I documented this process with screenshots of prompts and results, showing how t
 ### PerformanceMetrics Prompt
 ![PerformanceMetrics Prompt](performance_metrics_prompt.png)
 
+## Creating Tables and Inputing CSV data I created
+- ***Schema.sql*** : includes all the "CREATE TABLES" for my schema and ran it.
+- I then added all my Csv's to my project folder
+- ***Copying CSV tables into my sql***: i ran these commands
+
+  \copy campaigns           FROM 'campaigns.csv'           CSV HEADER;
+  \copy channels            FROM 'channels.csv'            CSV HEADER;
+  \copy vendors             FROM 'vendors.csv'             CSV HEADER;
+  \copy creative_assets     FROM 'creative_assets.csv'     CSV HEADER;
+  \copy placements          FROM 'placements.csv'          CSV HEADER;
+  \copy budget_allocations  FROM 'budget_allocations.csv'  CSV HEADER;
+  \copy performance_metrics FROM 'performance_metrics.csv' CSV HEADER;
+
 ## Dump
 
 ![Dump Screenshots](dump_ss_1.png)
 ![Dump Screenshots](dump_ss_3.png)
 ![Dump Screenshots](dump_ss_2.png)
 
-## Stage 2
 
-### Backups and Restore
+# Stage 2
 
-In this stage, I prepared scripts to back up and restore the PostgreSQL database.
+## Backups and Restore
 
-1. Plain SQL Backup
+- In this stage, I prepared scripts to back up and restore the PostgreSQL database.
+- I put my backup/restore commands into small shell scripts under scripts/ so the process is repeatable (same command every time) and portable (works on my machine and any other computer)
+- I also use a .env file for connection settings (PGHOST, PGPORT, PGUSER, PGDATABASE), so the scripts don’t hardcode credentials. This makes it easy to run on another computer by just changing .env.
+
+### 1. Plain SQL Backup
 - Command: ./scripts/backup_sql.sh
-- Output file: backupSQL.sql
-- Log file: backupSQL.log (includes pg_dump output and timing statistics)
+- Output file: ***backupSQL.sql***
+- Log file: ***backupSQL.log*** (includes pg_dump output and timing statistics)
 
-2. Custom Format Backup & Restore
+### 2. Custom Format Backup & Restore
 - Command: ./scripts/backup_psql.sh
-- Output file: backupPSQL.sql
-- Log file: backupPSQL.log (includes pg_dump output and timing statistics)
+- Output file: ***backupPSQL.sql***
+- Log file: ***backupPSQL.log*** (includes pg_dump output and timing statistics)
 
-Restore tested with: 
+### Restore tested with: 
+I first clear the schema to prove the restore works:
 - DROP SCHEMA public CASCADE;
 - CREATE SCHEMA public;
+Then I run pg_restore from the custom backup to rebuild schema + data.
 - ./scripts/restore_psql.sh
 
-### Queries and Parameterized Queries
+## Queries and Parameterized Queries
 This section documents the user-driven queries written for the database inlcuding joins, aggregates, grouping, ordering, subqueries, and constraints. 
 
 ### Queries.sql
@@ -169,11 +187,14 @@ I also wrote four parameterized queries to demonstrate dynamic query execution w
 - ParamQueries.sql: creation of queries with parameters.
 - ParamQueries.log: output log of creation.
 
-### Indexing & Query Performance Phase
+## Indexing & Query Performance Phase
+
 I identified three queries from my project that could benefit from indexes:
 - Q1 (Top campaigns by revenue)
 - Q2 (CTR by channel)
 - Q3 (Vendor revenue totals)
+- Q4 (Daily bookings by campaign)
+- Q7 (DELETE rows for one placement in a date range)
 These queries involve joins and grouping, which are often slow on large datasets without indexes.
 I created three custom indexes in Constraints.sql:
 - ***performance_metrics(placement_id, stat_date)*** → speeds joins & date filters (Q1, Q4, Q7).
@@ -190,9 +211,28 @@ I created three custom indexes in Constraints.sql:
 - Re-ran queries into ***Queries_after_index.log***: "psql -h localhost -p 5432 -U postgres -d travel_ads -f Queries.sql > Queries_after_index.log 2>&1"
 - Used grep to extract query times for easy comparison
 ![Before and After Screenshots](beforeandafter.png)
-  
 
-### Constraints 
+### Indexing Results Summary
+Q1 (Top 5 campaigns by revenue)
+- Before: ~92.8 ms → After: ~84.7 ms
+- ~9% speedup
+- Improvement is modest but noticeable, thanks to faster joins between performance_metrics, placements, and campaigns.
+Q2 (CTR by channel)
+- Before: ~36.9 ms → After: ~36.6 ms
+- <1% speedup
+Q3 (Vendor revenue totals)
+- Before: ~36.8 ms → After: ~36.4 ms
+- ~1% speedup
+Q4 (Daily bookings by campaign)
+- Before: ~4.4 ms → After: ~3.4 ms
+- ~23% speedup
+- The index on (placement_id, stat_date) + (campaign_id) improves filtering and grouping by campaign.
+Q7 (DELETE rows for one placement in a date range)
+- Before: ~1.795 ms → After: ~0.567 ms
+- ~68% speedup 🚀
+- This query benefited the most because it filters on placement_id and stat_date, exactly the two columns covered by the new composite index. Instead of scanning all rows, PostgreSQL could directly jump to the small subset of rows for that placement and date range.
+
+## Constraints 
 
 In this stage of the project, I strengthened the database schema by adding ancillary constraints using ALTER TABLE. These constraints ensure data integrity beyond just primary and foreign keys. I then wrote test queries (INSERT, UPDATE, DELETE) that intentionally violate the constraints to confirm they are enforced. Finally, I captured all inputs and outputs (including error messages) into a log file for documentation (constraints.log).
 
