@@ -220,7 +220,7 @@ I created three custom indexes in Constraints.sql:
 | Q2: CTR by channel | ~36.9 | ~36.6 | <1% | Minimal improvement |
 | Q3: Vendor revenue totals | ~36.8 | ~36.4 | ~1% | Minimal improvement |
 | Q4: Daily bookings by campaign | ~4.4 | ~3.4 | ~23% | Index on `(placement_id, stat_date)` + `(campaign_id)` helped grouping/filtering |
-| Q7: DELETE rows in date range | ~1.795 | ~0.567 | ~68% 🚀 | Biggest win — index matches `placement_id` + `stat_date` filter perfectly |
+| Q7: DELETE rows in date range | ~1.795 | ~0.567 | ~68% | Biggest win — index matches `placement_id` + `stat_date` filter perfectly |
 
 ### Key Takeaways
 - Composite indexes gave the most benefit for queries with strong filtering (`Q7` and `Q4`).  
