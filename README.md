@@ -152,15 +152,15 @@ I wrote eight queries that reflect user needs: four SELECT, two UPDATE, and two 
 ### UPDATE Queries
 ### 5) Close campaigns that already ended
 - Sets status = 'closed' where end_date < CURRENT_DATE.
-- Ensures campaigns don’t remain active beyond their intended run.
+- Ensures `campaigns` don’t remain active beyond their intended run.
 ### 6) Increase budget by +5% for active campaigns
-- Finds active campaigns and applies a 5% budget increase to their allocations.
+- Finds active `campaigns` and applies a 5% budget increase to their allocations.
 
 ### DELETE Queries
 ### 7) Remove performance metrics for one placement in a date range
-- Deletes all metrics for a given placement within a specific month.
+- Deletes all metrics for a given `placement` within a specific month.
 ### 8) Transaction rolled back.
-- Remove creative assets not tied to any placement
+- Remove creative assets not tied to any `placement`.
 - Helps prevent storage bloat from unused assets.
 
 ### ParamQueries.sql
@@ -171,15 +171,15 @@ I also wrote four parameterized queries to demonstrate dynamic query execution w
 - Ordered by creation time for easy review.
 - Example input: 2024-01-01.
 ### 2) Campaigns by vendor name
-- Finds campaigns linked to a specific vendor.
+- Finds `campaigns` linked to a specific `vendor`.
 - Example input: 'Google Ads'.
 ### 3) Impressions + clicks for a channel
-- Summarizes performance for one channel by ID.
+- Summarizes performance for one `channel` by ID.
 - Example input: channel_id = 2.
 ### 4) Average revenue per placement for a campaign
-- Aggregates revenue at placement level and averages across a campaign.
+- Aggregates revenue at `placement` level and averages across a `campaign`.
 - Example input: campaign_id = 5.
-- Helps determine revenue consistency within campaigns.
+- Helps determine revenue consistency within `campaigns`.
 
 ### Files:
 - Queries.sql: creation of queries.
@@ -190,16 +190,16 @@ I also wrote four parameterized queries to demonstrate dynamic query execution w
 ## Indexing & Query Performance Phase
 
 I identified three queries from my project that could benefit from indexes:
-- Q1 (Top campaigns by revenue)
-- Q2 (CTR by channel)
-- Q3 (Vendor revenue totals)
-- Q4 (Daily bookings by campaign)
-- Q7 (DELETE rows for one placement in a date range)
+- Q1 (Top `campaigns` by revenue)
+- Q2 (CTR by `channel`)
+- Q3 (`Vendor` revenue totals)
+- Q4 (Daily bookings by `campaign`)
+- Q7 (DELETE rows for one `placement` in a date range)
 These queries involve joins and grouping, which are often slow on large datasets without indexes.
 I created three custom indexes in Constraints.sql:
 - ***performance_metrics(placement_id, stat_date)*** → speeds joins & date filters (Q1, Q4, Q7).
-- ***placements(campaign_id)*** → speeds filtering/grouping by campaign (Q1, Q4).
-- ***placements(channel_id, vendor_id)*** → speeds grouping & joins by channel/vendor (Q2, Q3).
+- ***placements(campaign_id)*** → speeds filtering/grouping by `campaign` (Q1, Q4).
+- ***placements(channel_id, vendor_id)*** → speeds grouping & joins by `channel/vendor` (Q2, Q3).
 - These were chosen because primary keys are already indexed automatically, so I focused on foreign keys and join columns, as recommended in class.
 - I used ***\timing on*** in PostgreSQL to measure execution times before and after adding indexes.
 
@@ -253,15 +253,15 @@ In this stage of the project, I strengthened the database schema by adding ancil
 
 ### Step 2: For each constraint, I wrote queries that deliberately fail:
 
-- Campaign with end_date before start_date → violates chk_campaign_dates.
-- Vendor with invalid email → violates chk_vendor_email.
-- Video asset with duration = 0 → violates chk_asset_duration.
-- Image asset with duration → violates chk_asset_duration.
-- Creative asset with invalid dimensions (1920*1080) → violates chk_dimensions_format.
-- Negative budget allocation → violates chk_budget_positive.
-- Currency not uppercase (usd) → violates chk_currency_format.
-- Negative clicks in performance metrics → violates chk_nonnegative_metrics.
-- Update vendor email to invalid string → violates chk_vendor_email.
+- Campaign with end_date before start_date → violates 'chk_campaign_dates'.
+- Vendor with invalid email → violates `chk_vendor_email`.
+- Video asset with duration = 0 → violates `chk_asset_duration`.
+- Image asset with duration → violates `chk_asset_duration`.
+- Creative asset with invalid dimensions (1920*1080) → violates `chk_dimensions_format`.
+- Negative budget allocation → violates `chk_budget_positive`.
+- Currency not uppercase (usd) → violates `chk_currency_format`.
+- Negative clicks in performance metrics → violates `chk_nonnegative_metrics`.
+- Update vendor email to invalid string → violates `chk_vendor_email`.
 - Cascade delete test: Inserted a campaign with related placement, then deleted the campaign to confirm that placements were automatically deleted (ON DELETE CASCADE).
 
 ### Step 3: Captured Logs:
