@@ -3,7 +3,8 @@
 
 \pset pager off
 
-\echo === Q1 (SELECT): Instagram Reels placements per campaign ===
+\echo === Q1 (SELECT): This query finds all campaigns that ran ads on Instagram Reels (channel_id = 3). ===
+-- NOTE: channel_id = 3 corresponds to Instagram Reels
 \timing on
 SELECT
   c.campaign_id,
@@ -12,9 +13,7 @@ SELECT
   p.flight_end
 FROM placements p
 JOIN campaigns c ON c.campaign_id = p.campaign_id
-JOIN channels  ch ON ch.channel_id = p.channel_id
-WHERE ch.channel_name = 'instagram'
-  AND ch.subtype     = 'reels'
+WHERE p.channel_id = 3
 ORDER BY c.campaign_id, p.flight_start;
 \timing off
 
@@ -35,19 +34,21 @@ WHERE EXISTS (
 \timing off
 ROLLBACK;
 
-\echo === Q3 (SELECT): Bookings by campaign from newspaper ads ===
+\echo === Q3 (SELECT): Bookings by campaign from newspaper ads (channel_id = 1). ===
+-- NOTE: channel_id = 1 corresponds to Newspaper ads
 \timing on
+
 SELECT 
   c.campaign_id,
   c.name AS campaign_name,
   SUM(COALESCE(pm.confirmed_bookings, 0)) AS total_bookings
 FROM performance_metrics pm
 JOIN placements p ON p.placement_id = pm.placement_id
-JOIN channels ch  ON ch.channel_id = p.channel_id
 JOIN campaigns c  ON c.campaign_id = p.campaign_id
-WHERE ch.channel_name ILIKE 'newspaper'
+WHERE p.channel_id = 1
 GROUP BY c.campaign_id, c.name
 ORDER BY total_bookings DESC;
+
 \timing off
 
 
