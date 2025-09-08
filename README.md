@@ -213,24 +213,20 @@ I created three custom indexes in Constraints.sql:
 ![Before and After Screenshots](beforeandafter.png)
 
 ### Indexing Results Summary
-Q1 (Top 5 campaigns by revenue)
-- Before: ~92.8 ms → After: ~84.7 ms
-- ~9% speedup
-- Improvement is modest but noticeable, thanks to faster joins between performance_metrics, placements, and campaigns.
-Q2 (CTR by channel)
-- Before: ~36.9 ms → After: ~36.6 ms
-- <1% speedup
-Q3 (Vendor revenue totals)
-- Before: ~36.8 ms → After: ~36.4 ms
-- ~1% speedup
-Q4 (Daily bookings by campaign)
-- Before: ~4.4 ms → After: ~3.4 ms
-- ~23% speedup
-- The index on (placement_id, stat_date) + (campaign_id) improves filtering and grouping by campaign.
-Q7 (DELETE rows for one placement in a date range)
-- Before: ~1.795 ms → After: ~0.567 ms
-- ~68% speedup 🚀
-- This query benefited the most because it filters on placement_id and stat_date, exactly the two columns covered by the new composite index. Instead of scanning all rows, PostgreSQL could directly jump to the small subset of rows for that placement and date range.
+
+| Query | Before (ms) | After (ms) | Speedup | Notes |
+|-------|-------------|------------|---------|-------|
+| Q1: Top 5 campaigns by revenue | ~92.8 | ~84.7 | ~9% | Joins between `performance_metrics`, `placements`, and `campaigns` slightly faster |
+| Q2: CTR by channel | ~36.9 | ~36.6 | <1% | Minimal improvement |
+| Q3: Vendor revenue totals | ~36.8 | ~36.4 | ~1% | Minimal improvement |
+| Q4: Daily bookings by campaign | ~4.4 | ~3.4 | ~23% | Index on `(placement_id, stat_date)` + `(campaign_id)` helped grouping/filtering |
+| Q7: DELETE rows in date range | ~1.795 | ~0.567 | ~68% 🚀 | Biggest win — index matches `placement_id` + `stat_date` filter perfectly |
+
+### Key Takeaways
+- Composite indexes gave the most benefit for queries with strong filtering (`Q7` and `Q4`).  
+- Revenue/CTR queries improved only slightly, as they are more aggregation-heavy.  
+- Deleting by placement + date range is now **3× faster**.  
+
 
 ## Constraints 
 
