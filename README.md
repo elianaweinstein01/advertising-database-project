@@ -86,7 +86,7 @@ I documented this process with screenshots of prompts and results, showing how t
 - ***Schema.sql*** : includes all the "CREATE TABLES" for my schema and ran it.
 - I then added all my Csv's to my project folder
 - ***Copying CSV tables into my sql***: i ran these commands
-
+```
   \copy campaigns           FROM 'campaigns.csv'           CSV HEADER;
   \copy channels            FROM 'channels.csv'            CSV HEADER;
   \copy vendors             FROM 'vendors.csv'             CSV HEADER;
@@ -94,6 +94,7 @@ I documented this process with screenshots of prompts and results, showing how t
   \copy placements          FROM 'placements.csv'          CSV HEADER;
   \copy budget_allocations  FROM 'budget_allocations.csv'  CSV HEADER;
   \copy performance_metrics FROM 'performance_metrics.csv' CSV HEADER;
+```
 
 ## Dump
 
