@@ -112,7 +112,7 @@ I documented this process with screenshots of prompts and results, showing how t
 - I also use a .env file for connection settings (PGHOST, PGPORT, PGUSER, PGDATABASE), so the scripts don’t hardcode credentials. This makes it easy to run on another computer by just changing .env.
 
 ### 1. Plain SQL Backup
-- Command: ./scripts/backup_sql.sh
+- Command: ```./scripts/backup_sql.sh```
 - Output file: ***backupSQL.sql***
 - Log file: ***backupSQL.log*** (includes pg_dump output and timing statistics)
 
@@ -126,13 +126,13 @@ I first clear the schema to prove the restore works:
 - DROP SCHEMA public CASCADE;
 - CREATE SCHEMA public;
 Then I run pg_restore from the custom backup to rebuild schema + data.
-- ./scripts/restore_psql.sh
+- ```./scripts/restore_psql.sh```
 
 ## Queries and Parameterized Queries
 This section documents the user-driven queries written for the database inlcuding joins, aggregates, grouping, ordering, subqueries, and constraints. 
 
 ### Queries.sql
-I wrote eight queries that reflect user needs: four SELECT, two UPDATE, and two DELETE. Each query was written, executed, and timed using \timing on. Updates and deletes were wrapped in BEGIN … ROLLBACK so they could be tested safely without altering the data.
+I wrote eight queries that reflect user needs: four SELECT, two UPDATE, and two DELETE. Each query was written, executed, and timed using ```\timing on```. Updates and deletes were wrapped in BEGIN … ROLLBACK so they could be tested safely without altering the data.
 
 ### SELECT Queries
 ### 1) Top 5 campaigns by total revenue
@@ -202,7 +202,7 @@ I created three custom indexes in Constraints.sql:
 - ***placements(campaign_id)*** → speeds filtering/grouping by `campaign` (Q1, Q4).
 - ***placements(channel_id, vendor_id)*** → speeds grouping & joins by `channel/vendor` (Q2, Q3).
 - These were chosen because primary keys are already indexed automatically, so I focused on foreign keys and join columns, as recommended in class.
-- I used ***\timing on*** in PostgreSQL to measure execution times before and after adding indexes.
+- I used ```\timing on``` in PostgreSQL to measure execution times before and after adding indexes.
 
 ### How I Measured
 - Ran ***Queries.sql*** first (without my custom indexes): "psql -h localhost -p 5432 -U postgres -d travel_ads -f Queries.sql > Queries.log 2>&1"
