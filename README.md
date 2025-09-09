@@ -285,6 +285,70 @@ Meaning: Cleanup delete of the test campaign succeeded (and cascades ran as defi
 - Constraints.sql: Contains all ALTER TABLE statements and test queries.
 - constraints.log: Log file capturing all inputs and outputs.
 
+# Stage 3
+
+## 3 More Queries (Select and Update)
+
+### `Q1` – Campaigns that ran on Instagram Reels
+
+-- Q1: Find all campaigns that ran ads on Instagram Reels (channel_id = 3)
+
+SELECT
+  c.campaign_id,
+  c.name AS campaign_name,
+  p.flight_start,
+  p.flight_end
+FROM placements p
+JOIN campaigns c ON c.campaign_id = p.campaign_id
+WHERE p.channel_id = 3   -- channel_id = 3 = Instagram Reels
+ORDER BY c.campaign_id, p.flight_start;
+
+***What it does***: Finds all campaigns that ran on Instagram Reels, using channel_id = 3 (no need to join the channels table). Returns campaign name and the flight start/end dates.
+***Time***: 4.873 ms
+
+### `Q2` – Increase budget by 10% for campaigns with bookings in last 30 days
+
+-- Q2: Increase budget by 10% for campaigns that produced bookings in the last 30 days
+
+BEGIN;
+
+UPDATE budget_allocations ba
+SET amount_allocated = ROUND(ba.amount_allocated * 1.10, 2)
+WHERE EXISTS (
+  SELECT 1
+  FROM placements p
+  JOIN performance_metrics pm ON pm.placement_id = p.placement_id
+  WHERE p.campaign_id = ba.campaign_id
+    AND pm.stat_date >= CURRENT_DATE - INTERVAL '30 days'
+    AND COALESCE(pm.confirmed_bookings, 0) > 0
+);
+
+ROLLBACK;
+***What it does***: Checks for campaigns that had at least one confirmed booking in the last 30 days and increases their budget by 10%. A transaction wrapper is used so we can test with ROLLBACK first.
+***Time***: 87.242 ms
+
+### `Q3` – Bookings by campaign from newspaper ads
+
+-- Q3: Total confirmed bookings by campaign where channel is "newspaper"
+
+SELECT 
+  c.campaign_id,
+  c.name AS campaign_name,
+  SUM(COALESCE(pm.confirmed_bookings, 0)) AS total_bookings
+FROM performance_metrics pm
+JOIN placements p ON p.placement_id = pm.placement_id
+JOIN campaigns c  ON c.campaign_id = p.campaign_id
+WHERE p.channel_id = 1   -- channel_id = 1 = Newspaper
+GROUP BY c.campaign_id, c.name
+ORDER BY total_bookings DESC;
+***What it does***: Aggregates confirmed bookings from placements that ran in newspaper ads (channel_id = 1), grouped by campaign. Shows which campaigns generated the most bookings from newspapers.
+***Time***: 52.117 ms
+
+### Files:
+- `Stage3_Queries.sql` : SQL code
+- `stage3_queries.log` : output
+
+
 
 
 
