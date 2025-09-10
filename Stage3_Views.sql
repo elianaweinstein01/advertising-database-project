@@ -47,6 +47,7 @@ VALUES ('View Insert: Active Summer', 'Increase bookings', 'active', CURRENT_DAT
 UPDATE active_campaigns_v
 SET status = 'paused'
 WHERE name = 'View Insert: Active Summer';
+ROLLBACK;
 
 \echo === Q1 DELETE via view (should SUCCEED, then ROLLBACK)
 BEGIN;
