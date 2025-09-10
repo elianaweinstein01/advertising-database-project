@@ -18,6 +18,12 @@ GROUP BY c.campaign_id, c.name
 ORDER BY total_revenue DESC
 LIMIT 5;
 
+
+\echo === Q1 via function: Top-N campaigns by total revenue ===
+SELECT * FROM f_top_campaign_revenue(5);
+
+\echo ------------------
+
 \echo === Q2 (SELECT): Impressions, clicks, simple CTR by channel (Click Through Rate : a basic advertising metric that measures how often people who see an ad actually click on it.)===
   
 SELECT
@@ -32,6 +38,8 @@ JOIN channels ch ON ch.channel_id  = p.channel_id
 GROUP BY ch.channel_id, ch.channel_name
 ORDER BY impressions DESC;
 
+\echo ------------------
+
 \echo === Q3 (SELECT): Vendor revenue totals (highest to lowest) ===
   
 SELECT
@@ -44,6 +52,11 @@ JOIN vendors v ON v.vendor_id = p.vendor_id
 GROUP BY v.vendor_id, v.name
 ORDER BY revenue DESC;
 
+\echo === Q3 via function: Vendor revenue totals (highest to lowest) ===
+SELECT * FROM f_vendor_revenue();
+
+\echo ------------------
+
 
 \echo === Q4 (SELECT): Daily confirmed bookings for one campaign ===
 SELECT 
@@ -55,6 +68,12 @@ WHERE p.campaign_id = :campaign_id
 GROUP BY pm.stat_date
 ORDER BY pm.stat_date;
 
+\echo === Q4 via function: Daily confirmed bookings for one campaign ===
+\set campaign_id 1
+SELECT * FROM f_campaign_daily_bookings(:campaign_id);
+
+\echo ------------------
+
 \echo === Q5 (UPDATE): Close campaigns that already ended (no changes applied by default) ===
 BEGIN;
 
@@ -63,6 +82,8 @@ SET status = 'closed'
 WHERE end_date < CURRENT_DATE
   AND status <> 'closed';
 ROLLBACK;
+
+\echo ------------------
 
 \echo === Q6 (UPDATE): +5% budget for all ACTIVE campaigns (no changes applied by default) ===
 BEGIN;
@@ -76,6 +97,13 @@ WHERE EXISTS (
 );
 ROLLBACK;
 
+\echo === Q6 via function: +5% budget for all ACTIVE campaigns (dry run) ===
+BEGIN;
+SELECT f_bump_active_budgets(0.05) AS rows_updated;
+ROLLBACK;
+
+\echo ------------------
+
 \echo === Q7 (DELETE): Remove perf rows for one placement in a date range (no changes applied) ===
 BEGIN;
 
@@ -85,6 +113,8 @@ WHERE placement_id = 123   -- example placement
   AND stat_date <= '2024-01-31'::date;
 
 ROLLBACK;
+
+\echo ------------------
 
 \echo === Q8 (DELETE): Remove creative assets not used by any placement (no changes applied) ===
 BEGIN;
