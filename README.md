@@ -18,9 +18,9 @@ A travel agency runs many marketing campaigns across multiple media (newspapers,
 - **PerformanceMetric** – Daily (or periodic) results per placement (impressions, clicks, conversions, spend, leads, bookings, revenue).
 
 ### How the design supports the workflow
-1. **Plan** – Create a *Campaign*, allocate money in *BudgetAllocation*, set start/end dates and target regions/seasons.  
-2. **Execute** – For each *Placement*, pick a *Channel*, *Vendor*, and *CreativeAsset*, then set flight dates and targeting.  
-3. **Measure** – Load daily rows into *PerformanceMetric* for each placement. Analysts compare **planned vs. actual** across channels/vendors.
+1. **Plan** – Create a `Campaign`, allocate money in `BudgetAllocation`, set start/end dates and target regions/seasons.  
+2. **Execute** – For each `Placement`, pick a `Channel`, `Vendor`, and `CreativeAsset`, then set flight dates and targeting.  
+3. **Measure** – Load daily rows into `PerformanceMetric` for each placement. Analysts compare **planned vs. actual** across channels/vendors.
 
 ### Normalization choices
 - Lookup/reference tables (**Channel, Vendor, CreativeAsset**) avoid duplicated names and attributes.
@@ -85,7 +85,7 @@ I documented this process with screenshots of prompts and results, showing how t
 ## Creating Tables and Inputing CSV data I created
 - ***Schema.sql*** : includes all the "CREATE TABLES" for my schema and ran it.
 - I then added all my Csv's to my project folder
-- ***Copying CSV tables into my sql***: i ran these commands
+- ***Copying CSV tables into my sql***: I ran these commands
 ```
   \copy campaigns           FROM 'campaigns.csv'           CSV HEADER;
   \copy channels            FROM 'channels.csv'            CSV HEADER;
@@ -123,16 +123,16 @@ I documented this process with screenshots of prompts and results, showing how t
 
 ### Restore tested with: 
 I first clear the schema to prove the restore works:
-- DROP SCHEMA public CASCADE;
-- CREATE SCHEMA public;
+- `DROP SCHEMA public CASCADE;`
+- `CREATE SCHEMA public;`
 Then I run pg_restore from the custom backup to rebuild schema + data.
-- ```./scripts/restore_psql.sh```
+- `./scripts/restore_psql.sh`
 
 ## Queries and Parameterized Queries
 This section documents the user-driven queries written for the database inlcuding joins, aggregates, grouping, ordering, subqueries, and constraints. 
 
 ### Queries.sql
-I wrote eight queries that reflect user needs: four SELECT, two UPDATE, and two DELETE. Each query was written, executed, and timed using ```\timing on```. Updates and deletes were wrapped in BEGIN … ROLLBACK so they could be tested safely without altering the data.
+I wrote eight queries that reflect user needs: four `SELECT`, two `UPDATE`, and two `DELETE`. Each query was written, executed, and timed using ```\timing on```. Updates and deletes were wrapped in `BEGIN … ROLLBACK` so they could be tested safely without altering the data.
 
 ### SELECT Queries
 ### 1) Top 5 campaigns by total revenue
@@ -176,26 +176,26 @@ I also wrote four parameterized queries to demonstrate dynamic query execution w
 - Example input: 'Google Ads'.
 ### 3) Impressions + clicks for a channel
 - Summarizes performance for one `channel` by ID.
-- Example input: channel_id = 2.
+- Example input: `channel_id = 2`.
 ### 4) Average revenue per placement for a campaign
 - Aggregates revenue at `placement` level and averages across a `campaign`.
-- Example input: campaign_id = 5.
+- Example input: campaign_id = 5`.
 - Helps determine revenue consistency within `campaigns`.
 
 ### Files:
-- Queries.sql: creation of queries.
-- queries.log: output log of creation.
-- ParamQueries.sql: creation of queries with parameters.
-- ParamQueries.log: output log of creation.
+- `Queries.sql`: creation of queries.
+- `queries.log`: output log of creation.
+- `ParamQueries.sql`: creation of queries with parameters.
+- `ParamQueries.log`: output log of creation.
 
 ## Indexing & Query Performance Phase
 
 I identified three queries from my project that could benefit from indexes:
-- Q1 (Top `campaigns` by revenue)
-- Q2 (CTR by `channel`)
-- Q3 (`Vendor` revenue totals)
-- Q4 (Daily bookings by `campaign`)
-- Q7 (DELETE rows for one `placement` in a date range)
+- `Q1` (Top `campaigns` by revenue)
+- `Q2` (CTR by `channel`)
+- `Q3` (`Vendor` revenue totals)
+- `Q4` (Daily bookings by `campaign`)
+- `Q7` (DELETE rows for one `placement` in a date range)
 These queries involve joins and grouping, which are often slow on large datasets without indexes.
 I created three custom indexes in Constraints.sql:
 - ***performance_metrics(placement_id, stat_date)*** → speeds joins & date filters (Q1, Q4, Q7).
