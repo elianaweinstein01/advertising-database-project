@@ -389,3 +389,24 @@ Tests:
 - **INSERT** a new placement with channel_id=3 → succeeded, rolled back.
 - **UPDATE** channel to 1 → rejected.
 - **DELETE** through the view → succeeded, rolled back.
+
+### Visualizations
+
+**Active Campaigns by Region (Bar Chart)**
+```sql
+SELECT 
+  CASE WHEN status = 'active' THEN 'Active' ELSE 'Not Active' END AS campaign_status,
+  COUNT(*) AS num_campaigns
+FROM campaigns
+GROUP BY campaign_status;
+```
+![Bar Chart](barChart.png)
+
+**Video Assets Compliance Status (Pie Chart)**
+```sql
+SELECT compliance_ok, COUNT(*) AS num_assets
+FROM video_assets_v
+GROUP BY compliance_ok;
+```
+![Pie Chart](pieChart.png)
+
