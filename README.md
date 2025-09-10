@@ -306,11 +306,86 @@ Meaning: Cleanup delete of the test campaign succeeded (and cascades ran as defi
 - `Stage3_Queries.sql` : SQL code
 - `stage3_queries.log` : output
 
+## Stage 3: Views
 
+In this stage, we created **four SQL views** to serve the needs of different user groups.  
+Each view was made **updatable** (using `WITH CHECK OPTION`) so that inserts/updates/deletes via the view enforce its filtering rules.  
+We then tested each view with **SELECT, INSERT, UPDATE, and DELETE** queries to verify correct behavior.
 
+All runs were logged in `stage3_views.log`.
 
+### View 1: `active_campaigns_v`
+- **Purpose:** Show only campaigns that are currently active (`status = 'active'`).  
+- **Use case:** Marketing managers want to see and manage only campaigns that are still running.
 
+```sql
+CREATE OR REPLACE VIEW active_campaigns_v AS
+SELECT campaign_id, name, objective, status, start_date, end_date,
+       ramp_up_phase, season, target_region
+FROM campaigns
+WHERE status = 'active'
+WITH LOCAL CHECK OPTION;
+```
 
+Tests:
+- **SELECT** → returned all active campaigns.
+- **INSERT** with status='active' → succeeded.
+- **UPDATE** row to paused → failed with CHECK OPTION error.
+- **DELETE** through the view → succeeded, rolled back.
+- **INSERT** with status='paused' → failed as expected.
 
+### View 2: `video_assets_v`
+- **Purpose:** Show only creative assets that are videos with a valid (positive) duration.
+- **Use case:** The creative team tracks only valid video ads, excluding broken entries.
 
+```sql
+CREATE OR REPLACE VIEW video_assets_v AS
+SELECT asset_id, asset_type, title, url_or_path, dimensions, duration_sec,
+       created_at, compliance_ok
+FROM creative_assets
+WHERE asset_type = 'video' AND duration_sec > 0
+WITH LOCAL CHECK OPTION;
+```
 
+Tests:
+- **SELECT** → listed recent video assets.
+- **INSERT** with asset_type='image' → rejected.
+- **UPDATE** to set duration_sec = 0 → rejected.
+- **DELETE** through the view → succeeded, rolled back.
+
+### View 3: `usd_budgets_v`
+- **Purpose:** Show only budgets in USD with positive amounts.
+- **Use case:** The finance team audits valid USD campaign budgets.
+
+```sql
+CREATE OR REPLACE VIEW usd_budgets_v AS
+SELECT campaign_id, amount_allocated, currency
+FROM budget_allocations
+WHERE currency = 'USD' AND amount_allocated > 0
+WITH LOCAL CHECK OPTION;
+```
+
+Tests:
+- **SELECT** → returned top USD budgets.
+- **INSERT** with currency='EUR' → rejected by CHECK OPTION.
+- **UPDATE** amount to negative → rejected.
+- **DELETE** a USD budget → succeeded, rolled back.
+
+### View 4: `reels_placements_v`
+- **Purpose:** Show only placements that run on Instagram Reels (channel_id = 3).
+- **Use case:** Social media analysts focus only on Reels campaigns.
+
+```sql
+CREATE OR REPLACE VIEW reels_placements_v AS
+SELECT placement_id, campaign_id, channel_id, vendor_id, asset_id,
+       flight_start, flight_end
+FROM placements
+WHERE channel_id = 3
+WITH LOCAL CHECK OPTION;
+```
+
+Tests:
+- **SELECT** → returned Reels placements.
+- **INSERT** a new placement with channel_id=3 → succeeded, rolled back.
+- **UPDATE** channel to 1 → rejected.
+- **DELETE** through the view → succeeded, rolled back.
