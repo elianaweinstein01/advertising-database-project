@@ -150,19 +150,25 @@ WHERE campaign_id = (
 ROLLBACK;
 
 
-\echo === Q3 (INSERT invalid via view): insert non-USD row (should FAIL due to CHECK OPTION) ===
+\echo === Q3 (INSERT invalid via view): force CHECK OPTION failure ===
 BEGIN;
 
-INSERT INTO usd_budgets_v (campaign_id, amount_allocated, currency)
-SELECT
-  c.campaign_id, 1000, 'EUR'
-FROM campaigns c
-WHERE NOT EXISTS (
-  SELECT 1 FROM budget_allocations ba WHERE ba.campaign_id = c.campaign_id
+-- Temporarily free up a campaign_id by removing one budget row
+WITH victim AS (
+  SELECT campaign_id
+  FROM usd_budgets_v
+  ORDER BY campaign_id
+  LIMIT 1
 )
-ORDER BY c.campaign_id
-LIMIT 1;
+DELETE FROM budget_allocations ba
+USING victim
+WHERE ba.campaign_id = victim.campaign_id;
 
+-- Now try inserting a non-USD row for that campaign through the view → should FAIL
+INSERT INTO usd_budgets_v (campaign_id, amount_allocated, currency)
+SELECT campaign_id, 1000, 'EUR' FROM victim;
+
+-- Expect: ERROR: new row violates WITH CHECK OPTION for view "usd_budgets_v"
 ROLLBACK;
 
 
