@@ -285,6 +285,7 @@ Meaning: Cleanup delete of the test campaign succeeded (and cascades ran as defi
 ### Files
 - Constraints.sql: Contains all ALTER TABLE statements and test queries.
 - constraints.log: Log file capturing all inputs and outputs.
+________________________________________________________________
 
 # Stage 3
 
@@ -293,19 +294,19 @@ Meaning: Cleanup delete of the test campaign succeeded (and cascades ran as defi
 ### `Q1` – Campaigns that ran on Instagram Reels
 - ***What it does***: Finds all campaigns that ran on Instagram Reels, using channel_id = 3 (no need to join the channels table). Returns campaign name and the flight start/end dates.
 - ***Time***: 4.873 ms
-
+  ________________________________________________________________
 ### `Q2` – Increase budget by 10% for campaigns with bookings in last 30 days
 - ***What it does***: Checks for campaigns that had at least one confirmed booking in the last 30 days and increases their budget by 10%. A transaction wrapper is used so we can test with ROLLBACK first.
 - ***Time***: 87.242 ms
-
+________________________________________________________________
 ### `Q3` – Bookings by campaign from newspaper ads
 - ***What it does***: Aggregates confirmed bookings from placements that ran in newspaper ads (channel_id = 1), grouped by campaign. Shows which campaigns generated the most bookings from newspapers.
 - ***Time***: 52.117 ms
-
+________________________________________________________________
 ### Files:
 - `Stage3_Queries.sql` : SQL code
 - `stage3_queries.log` : output
-
+________________________________________________________________
 ## Stage 3: Views
 
 In this stage, we created **four SQL views** to serve the needs of different user groups.  
@@ -333,6 +334,7 @@ Tests:
 - **UPDATE** row to paused → failed with CHECK OPTION error.
 - **DELETE** through the view → succeeded, rolled back.
 - **INSERT** with status='paused' → failed as expected.
+________________________________________________________________
 
 ### View 2: `video_assets_v`
 - **Purpose:** Show only creative assets that are videos with a valid (positive) duration.
@@ -352,6 +354,7 @@ Tests:
 - **INSERT** with asset_type='image' → rejected.
 - **UPDATE** to set duration_sec = 0 → rejected.
 - **DELETE** through the view → succeeded, rolled back.
+________________________________________________________________
 
 ### View 3: `usd_budgets_v`
 - **Purpose:** Show only budgets in USD with positive amounts.
@@ -370,6 +373,7 @@ Tests:
 - **INSERT** with currency='EUR' → rejected by CHECK OPTION.
 - **UPDATE** amount to negative → rejected.
 - **DELETE** a USD budget → succeeded, rolled back.
+________________________________________________________________
 
 ### View 4: `reels_placements_v`
 - **Purpose:** Show only placements that run on Instagram Reels (channel_id = 3).
@@ -409,4 +413,79 @@ FROM video_assets_v
 GROUP BY compliance_ok;
 ```
 ![Pie Chart](pieChart.png)
+
+## SQL Functions
+
+In this stage, I created four PostgreSQL functions to simplify and parameterize queries that were previously written as long SQL blocks. These functions are stored in `Functions.sql`, and they replace or enhance queries from earlier stages (`Queries.sql`).
+
+Using functions provides:
+- Reusability: No need to rewrite complex queries.
+- Parameterization: Some functions accept arguments (like campaign IDs or percentages).
+- Cleaner code: The logic is encapsulated inside the function.
+- Performance comparison: I measured execution times with and without functions to see if there was an improvement.
+
+### Function 1: `f_top_campaign_revenue(p_limit int)`
+- Replaces `Q1`: Top-N campaigns by revenue
+- Takes p_limit as input (e.g., top 5 campaigns).
+- Returns only the top campaigns ordered by revenue.
+  
+### Timing Results (Q1)
+
+| Method        | Time (ms) | Notes               |
+|---------------|-----------|---------------------|
+| No function   | 262.239   | Baseline execution  |
+| With function | 70.699    | ~73% faster         |
+
+________________________________________________________________
+
+### Function 2: `f_vendor_revenue()`
+- Replaces `Q3`: Vendor revenue totals.
+- Returns each vendor’s total revenue in descending order.
+
+### Timing Results (Q3)
+
+| Method        | Time (ms) | Notes               |
+|---------------|-----------|---------------------|
+| No function   | 28.255    | Baseline execution  |
+| With function | 55.060    | Slightly slower     |
+
+________________________________________________________________
+
+### Function 3: `f_campaign_daily_bookings(p_campaign_id int)`
+- Replaces `Q4`: Daily confirmed bookings for one campaign.
+- Takes a campaign ID as input.
+- Useful for analyzing campaign booking trends over time.
+  
+### Timing Results (Q4)
+
+| Method        | Time (ms) | Notes                         |
+|---------------|-----------|-------------------------------|
+| No function   | 16.599    | Baseline execution            |
+| With function | 16.216    | Performance nearly identical  |
+
+________________________________________________________________
+
+### Function 4: `f_bump_active_budgets(p_percent numeric)`
+- Replaces `Q6`: Increase budget allocations for active campaigns
+- Takes a percentage (e.g., 0.05 for +5%).
+- Updates budgets only for active campaigns.
+
+### Timing Results (Q6)
+
+| Method        | Time (ms) | Notes              |
+|---------------|-----------|--------------------|
+| No function   | 3.185     | Baseline execution |
+| With function | 1.712     | ~46% faster        |
+
+________________________________________________________________
+
+### files
+stage3_functions_queries.log : comparison of queries without functions and the same queries substitutued with a function
+Queries.sql : editied this file to contain queries with functions
+Functions: sql code for function creation
+
+
+  
+
+
 
