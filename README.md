@@ -33,12 +33,17 @@ A travel agency runs many marketing campaigns across multiple media (newspapers,
 - **Analysts/Data Team:** evaluate funnels (leads → bookings → revenue).
 
 ### Files for Stage 1
-- **ERD (image)**: `ERD.png` (embedded below).  
-- **ERD (JSON source)**: `ERD.erdplus` (in repo).  
-- **DSD (image)**: `DSD.png’
+- **ERD (image)**: `erdplus.png` (embedded below).  
+- **ERD (JSON source)**: `ERD(1).erdplus` (in repo).  
+- **DSD (image)**: `DSD_diagram.png’ (embedded below)
 - **SQL schema**: `schema.sql` (PostgreSQL `CREATE TABLE` statements).
 
-![ERD Diagram](ERD.png)
+### ERD Diagram
+![ERD Diagram](erdplus.png)
+
+### DSD Diagram
+![DSD Diagram](DSD_diagram.png)
+
 
 ## Data Generation Process
 
