@@ -1,0 +1,173 @@
+Pager usage is off.
+Timing is on.
+DROP VIEW
+Time: 11.742 ms
+DROP VIEW
+Time: 1.108 ms
+DROP VIEW
+Time: 0.755 ms
+DROP VIEW
+Time: 0.780 ms
+=== Create: active_campaigns_v ===
+CREATE VIEW
+Time: 25.459 ms
+=== Q1 (SELECT): list active campaigns ===
+ campaign_id |               name                | start_date |  end_date  
+-------------+-----------------------------------+------------+------------
+           1 | Holy Land Heritage Tour           | 2024-01-16 | 2024-04-15
+           4 | Mediterranean Cruise Specials     | 2024-03-01 | 2024-05-30
+           5 | Family Fun in Eilat               | 2024-03-16 | 2024-06-14
+           6 | Romantic Paris Getaway            | 2024-03-31 | 2024-06-29
+           8 | Explore Italy’s Wine Country      | 2024-04-30 | 2024-07-29
+           9 | Adventure Awaits in South America | 2024-05-15 | 2024-08-13
+          11 | Fall Colors in New England        | 2024-06-14 | 2024-09-12
+          13 | Dubai Luxury Shopping Festival    | 2024-07-14 | 2024-10-12
+          15 | Backpacking the Balkans           | 2024-08-13 | 2024-11-11
+          20 | Scandinavia Midnight Sun Tour     | 2024-10-27 | 2025-01-25
+(10 rows)
+
+Time: 6.321 ms
+=== Q1 (INSERT valid via view): insert an active campaign (should SUCCEED) ===
+BEGIN
+Time: 0.331 ms
+INSERT 0 1
+Time: 3.570 ms
+=== Q1 (UPDATE invalid via view): set status to paused (should FAIL due to CHECK OPTION) ===
+psql:Stage3_Views.sql:49: ERROR:  new row violates check option for view "active_campaigns_v"
+DETAIL:  Failing row contains (31, View Insert: Active Summer, Increase bookings, paused, 2025-09-10, 2025-09-24, f, Summer, Europe).
+Time: 4.123 ms
+ROLLBACK
+Time: 0.355 ms
+=== Q1 DELETE via view (should SUCCEED, then ROLLBACK)
+BEGIN
+Time: 0.131 ms
+DELETE 0
+Time: 0.539 ms
+ROLLBACK
+Time: 0.226 ms
+=== Q1 INSERT invalid via view (should FAIL: status not active)
+BEGIN
+Time: 0.103 ms
+psql:Stage3_Views.sql:61: ERROR:  new row violates check option for view "active_campaigns_v"
+DETAIL:  Failing row contains (32, Invalid Through View, Test, paused, 2025-09-10, 2025-09-17, f, null, null).
+Time: 0.322 ms
+ROLLBACK
+Time: 0.125 ms
+=== Create: video_assets_v ===
+CREATE VIEW
+Time: 1.453 ms
+=== Q2 (SELECT): sample video assets ===
+ asset_id |       title       | duration_sec |     created_at      
+----------+-------------------+--------------+---------------------
+       79 | Example Title 79  |           71 | 2025-01-25 06:48:17
+      134 | Example Title 134 |          158 | 2025-01-19 14:35:41
+      161 | Example Title 161 |          140 | 2025-01-10 01:43:49
+       80 | Example Title 80  |          113 | 2024-12-21 03:06:26
+      145 | Example Title 145 |          179 | 2024-12-20 16:02:57
+       50 | Example Title 50  |           11 | 2024-11-28 16:56:01
+      112 | Example Title 112 |          123 | 2024-10-30 01:33:27
+      138 | Example Title 138 |           49 | 2024-10-26 08:09:07
+      126 | Example Title 126 |           43 | 2024-09-15 15:55:10
+      198 | Example Title 198 |          116 | 2024-09-05 13:37:23
+(10 rows)
+
+Time: 1.474 ms
+=== Q2 (INSERT invalid via view): try to insert a non-video (should FAIL) ===
+BEGIN
+Time: 0.077 ms
+psql:Stage3_Views.sql:93: ERROR:  new row violates check option for view "video_assets_v"
+DETAIL:  Failing row contains (221, image, Wrong Through View, http://example.com/img.jpg, 800x600, null, 2025-09-10 13:42:26.179398, t).
+Time: 1.949 ms
+ROLLBACK
+Time: 0.079 ms
+=== Q2 (UPDATE invalid via view): try to zero the duration (should FAIL) ===
+BEGIN
+Time: 0.069 ms
+psql:Stage3_Views.sql:106: ERROR:  new row for relation "creative_assets" violates check constraint "chk_asset_duration"
+DETAIL:  Failing row contains (79, video, Example Title 79, /assets/videos/vid_79.mp4, 1920x1080, 0, 2025-01-25 06:48:17, t).
+Time: 1.640 ms
+ROLLBACK
+Time: 0.088 ms
+=== Q2 (DELETE via view): delete one video asset (should SUCCEED, then rollback) ===
+BEGIN
+Time: 0.059 ms
+DELETE 1
+Time: 2.824 ms
+ROLLBACK
+Time: 0.088 ms
+=== Create: usd_budgets_v ===
+CREATE VIEW
+Time: 2.626 ms
+=== Q3 (SELECT): USD budgets ===
+ campaign_id | amount_allocated 
+-------------+------------------
+          10 |          7850.00
+           9 |          3327.00
+(2 rows)
+
+Time: 1.379 ms
+=== Q3 (UPDATE invalid via view): set a negative amount (should FAIL) ===
+BEGIN
+Time: 0.679 ms
+psql:Stage3_Views.sql:148: ERROR:  new row for relation "budget_allocations" violates check constraint "chk_budget_positive"
+DETAIL:  Failing row contains (9, -100.00, USD).
+Time: 18.415 ms
+ROLLBACK
+Time: 0.276 ms
+=== Q3 (INSERT invalid via view): create temp campaign, then fail CHECK OPTION ===
+BEGIN
+Time: 0.214 ms
+psql:Stage3_Views.sql:163: ERROR:  new row violates check option for view "usd_budgets_v"
+DETAIL:  Failing row contains (33, 1000.00, EUR).
+Time: 14.225 ms
+ROLLBACK
+Time: 6.345 ms
+=== Q3 (DELETE via view): delete one USD budget (should SUCCEED, then rollback) ===
+BEGIN
+Time: 0.110 ms
+DELETE 1
+Time: 1.405 ms
+ROLLBACK
+Time: 0.159 ms
+=== Create: reels_placements_v (channel_id = 3) ===
+CREATE VIEW
+Time: 1.803 ms
+=== Q4 (SELECT): sample Reels placements ===
+ placement_id | campaign_id | flight_start | flight_end 
+--------------+-------------+--------------+------------
+          990 |           3 | 2025-12-31   | 2026-01-16
+          815 |           3 | 2025-12-26   | 2026-01-18
+          456 |           3 | 2025-12-19   | 2026-01-11
+          162 |           6 | 2025-03-13   | 2025-05-12
+          198 |           4 | 2025-03-03   | 2025-03-15
+          323 |           4 | 2025-02-03   | 2025-04-17
+          878 |           9 | 2024-04-13   | 2024-04-30
+          769 |          14 | 2024-03-12   | 2024-06-08
+          625 |           9 | 2024-03-11   | 2024-03-21
+          380 |          10 | 2023-09-13   | 2023-09-29
+(10 rows)
+
+Time: 0.578 ms
+=== Q4 (INSERT valid via view): insert a new Reels placement (should SUCCEED then ROLLBACK) ===
+BEGIN
+Time: 0.071 ms
+INSERT 0 1
+Time: 2.062 ms
+ROLLBACK
+Time: 0.273 ms
+=== Q4 (UPDATE invalid via view): try to change channel to non-3 (should FAIL) ===
+BEGIN
+Time: 0.074 ms
+psql:Stage3_Views.sql:236: ERROR:  new row violates check option for view "reels_placements_v"
+DETAIL:  Failing row contains (37, 12, 1, 3, 30, 2023-04-01, 2023-05-01).
+Time: 0.503 ms
+ROLLBACK
+Time: 0.057 ms
+=== Q4 (DELETE via view): delete today’s inserted row (should SUCCEED then ROLLBACK) ===
+BEGIN
+Time: 0.059 ms
+DELETE 0
+Time: 0.204 ms
+ROLLBACK
+Time: 0.062 ms
+Timing is off.

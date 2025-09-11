@@ -1,0 +1,105 @@
+=== Creating useful indexes for queries ===
+Timing is on.
+
+--- Current project-specific indexes (before) ---
+                                                         List of relations
+ Schema |           Name            | Type  |  Owner   |        Table        | Persistence | Access method |  Size   | Description 
+--------+---------------------------+-------+----------+---------------------+-------------+---------------+---------+-------------
+ public | idx_assets_created_at     | index | postgres | creative_assets     | permanent   | btree         | 16 kB   | 
+ public | idx_pl_campaign           | index | postgres | placements          | permanent   | btree         | 16 kB   | 
+ public | idx_pl_channel_vendor     | index | postgres | placements          | permanent   | btree         | 16 kB   | 
+ public | idx_placements_campaign   | index | postgres | placements          | permanent   | btree         | 16 kB   | 
+ public | idx_placements_vendor     | index | postgres | placements          | permanent   | btree         | 16 kB   | 
+ public | idx_pm_placement_statdate | index | postgres | performance_metrics | permanent   | btree         | 4408 kB | 
+(6 rows)
+
+
+--- Creating / ensuring indexes exist ---
+psql:Constraints.sql:20: NOTICE:  relation "idx_pm_placement_statdate" already exists, skipping
+CREATE INDEX
+Time: 4.707 ms
+psql:Constraints.sql:23: NOTICE:  relation "idx_pl_campaign" already exists, skipping
+CREATE INDEX
+Time: 0.369 ms
+psql:Constraints.sql:26: NOTICE:  relation "idx_pl_channel_vendor" already exists, skipping
+CREATE INDEX
+Time: 0.205 ms
+
+--- Index list (after) ---
+                                                         List of relations
+ Schema |           Name            | Type  |  Owner   |        Table        | Persistence | Access method |  Size   | Description 
+--------+---------------------------+-------+----------+---------------------+-------------+---------------+---------+-------------
+ public | idx_assets_created_at     | index | postgres | creative_assets     | permanent   | btree         | 16 kB   | 
+ public | idx_pl_campaign           | index | postgres | placements          | permanent   | btree         | 16 kB   | 
+ public | idx_pl_channel_vendor     | index | postgres | placements          | permanent   | btree         | 16 kB   | 
+ public | idx_placements_campaign   | index | postgres | placements          | permanent   | btree         | 16 kB   | 
+ public | idx_placements_vendor     | index | postgres | placements          | permanent   | btree         | 16 kB   | 
+ public | idx_pm_placement_statdate | index | postgres | performance_metrics | permanent   | btree         | 4408 kB | 
+(6 rows)
+
+ANALYZE
+Time: 168.141 ms
+Timing is off.
+ setval 
+--------
+     20
+(1 row)
+
+ setval 
+--------
+     13
+(1 row)
+
+ setval 
+--------
+     31
+(1 row)
+
+ setval 
+--------
+    212
+(1 row)
+
+ setval 
+--------
+   1000
+(1 row)
+
+ setval 
+--------
+ 200000
+(1 row)
+
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+psql:Constraints.sql:89: ERROR:  new row for relation "campaigns" violates check constraint "chk_campaign_dates"
+DETAIL:  Failing row contains (21, Bad Campaign, Test, active, 2025-09-10, 2025-09-01, f, null, null).
+psql:Constraints.sql:93: ERROR:  new row for relation "vendors" violates check constraint "chk_vendor_email"
+DETAIL:  Failing row contains (32, VendorX, null, bademail.com, null, null).
+psql:Constraints.sql:100: ERROR:  new row for relation "creative_assets" violates check constraint "chk_asset_duration"
+DETAIL:  Failing row contains (213, video, Broken Video, http://example.com/fail.mp4, 1920x1080, 0, 2025-09-07 15:55:30.08021, t).
+psql:Constraints.sql:107: ERROR:  new row for relation "creative_assets" violates check constraint "chk_asset_duration"
+DETAIL:  Failing row contains (214, image, Broken Image, http://example.com/fail.jpg, 800x600, 45, 2025-09-07 15:55:30.081293, t).
+psql:Constraints.sql:114: ERROR:  new row for relation "creative_assets" violates check constraint "chk_dimensions_format"
+DETAIL:  Failing row contains (215, image, Bad Dimensions, http://example.com/img.jpg, 1920*1080, null, 2025-09-07 15:55:30.081649, t).
+INSERT 0 1
+psql:Constraints.sql:122: ERROR:  new row for relation "budget_allocations" violates check constraint "chk_budget_positive"
+DETAIL:  Failing row contains (22, -500.00, USD).
+psql:Constraints.sql:127: ERROR:  new row for relation "budget_allocations" violates check constraint "chk_currency_format"
+DETAIL:  Failing row contains (22, 1000.00, usd).
+DELETE 1
+psql:Constraints.sql:136: ERROR:  new row for relation "performance_metrics" violates check constraint "chk_nonnegative_metrics"
+DETAIL:  Failing row contains (200001, 2025-09-07, 100, -5, null, null, null, null, 100.00, 1).
+psql:Constraints.sql:140: ERROR:  new row for relation "vendors" violates check constraint "chk_vendor_email"
+DETAIL:  Failing row contains (1, Haaretz Newspaper, Miriam Cohen, invalid, +972-3-5123456, NET30).
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+DELETE 1

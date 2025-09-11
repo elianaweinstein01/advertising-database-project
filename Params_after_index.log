@@ -1,0 +1,147 @@
+Timing is on.
+PREPARE
+Time: 9.650 ms
+ asset_id | asset_type |     created_at      
+----------+------------+---------------------
+       65 | video      | 2024-01-01 07:10:32
+      162 | audio      | 2024-01-01 12:34:04
+      194 | video      | 2024-01-05 17:50:56
+       47 | video      | 2024-01-18 08:53:37
+       19 | text       | 2024-01-20 07:21:29
+       73 | text       | 2024-01-24 05:40:07
+      188 | image      | 2024-01-24 10:18:07
+       40 | text       | 2024-01-24 10:57:33
+       67 | video      | 2024-01-27 13:24:29
+      110 | text       | 2024-01-29 07:16:48
+      143 | text       | 2024-02-01 05:04:37
+       12 | image      | 2024-02-03 06:23:33
+       39 | video      | 2024-02-04 19:03:36
+       34 | audio      | 2024-02-20 11:38:30
+       20 | audio      | 2024-02-21 14:50:53
+      130 | video      | 2024-03-01 04:20:15
+      192 | video      | 2024-03-09 11:58:56
+       45 | video      | 2024-03-14 13:21:48
+       11 | video      | 2024-03-14 16:53:48
+        8 | video      | 2024-03-21 09:06:05
+      151 | image      | 2024-03-31 02:28:57
+       58 | image      | 2024-03-31 03:15:10
+      199 | text       | 2024-04-16 18:42:47
+       24 | audio      | 2024-04-24 16:36:43
+       27 | image      | 2024-05-08 06:59:38
+      171 | video      | 2024-05-11 14:28:36
+      149 | text       | 2024-05-18 05:33:10
+      170 | video      | 2024-05-22 11:43:57
+      115 | text       | 2024-05-22 13:49:17
+      183 | image      | 2024-05-23 11:31:10
+       14 | video      | 2024-05-26 03:23:29
+       64 | video      | 2024-05-27 19:06:24
+      152 | audio      | 2024-05-30 04:46:19
+      133 | image      | 2024-06-01 08:30:15
+        7 | image      | 2024-06-02 04:21:24
+      101 | video      | 2024-06-05 15:16:14
+      174 | text       | 2024-06-07 14:54:40
+      154 | audio      | 2024-06-11 21:13:49
+      160 | video      | 2024-06-16 09:56:46
+      109 | text       | 2024-06-20 02:51:22
+      158 | video      | 2024-06-20 14:28:32
+      169 | audio      | 2024-06-23 23:14:24
+       51 | text       | 2024-06-24 10:19:11
+      179 | text       | 2024-06-26 03:20:11
+      137 | text       | 2024-06-28 17:17:56
+       25 | text       | 2024-07-03 04:24:51
+      146 | image      | 2024-07-04 21:17:02
+      135 | audio      | 2024-07-06 08:37:48
+      195 | audio      | 2024-07-12 23:45:16
+      116 | audio      | 2024-07-20 00:20:18
+       94 | text       | 2024-07-25 18:34:41
+       32 | image      | 2024-08-11 19:19:02
+        1 | image      | 2024-08-20 06:23:09
+        5 | video      | 2024-08-23 20:43:30
+       16 | audio      | 2024-08-27 20:44:20
+       86 | text       | 2024-09-02 13:32:06
+      198 | video      | 2024-09-05 13:37:23
+       26 | image      | 2024-09-10 01:34:02
+      122 | image      | 2024-09-12 19:03:06
+       35 | image      | 2024-09-15 03:31:14
+      126 | video      | 2024-09-15 15:55:10
+       75 | text       | 2024-09-19 02:33:09
+      148 | image      | 2024-09-19 14:14:27
+      103 | audio      | 2024-09-24 18:13:03
+      124 | image      | 2024-09-27 01:28:58
+       57 | image      | 2024-09-28 18:13:40
+       54 | audio      | 2024-09-29 06:49:14
+       93 | image      | 2024-10-06 10:44:16
+       48 | image      | 2024-10-08 20:05:21
+      191 | image      | 2024-10-13 04:27:27
+       61 | text       | 2024-10-15 02:34:26
+      138 | video      | 2024-10-26 08:09:07
+      106 | image      | 2024-10-29 16:03:48
+      112 | video      | 2024-10-30 01:33:27
+      165 | image      | 2024-11-02 16:51:35
+      196 | image      | 2024-11-03 21:54:46
+       66 | text       | 2024-11-07 02:41:08
+      155 | audio      | 2024-11-14 04:57:17
+      139 | image      | 2024-11-16 19:25:24
+       82 | image      | 2024-11-19 18:22:02
+      118 | image      | 2024-11-24 10:18:36
+       50 | video      | 2024-11-28 16:56:01
+      193 | text       | 2024-12-08 06:59:27
+      145 | video      | 2024-12-20 16:02:57
+       80 | video      | 2024-12-21 03:06:26
+       83 | text       | 2024-12-21 03:39:53
+      159 | text       | 2024-12-25 21:52:05
+      172 | text       | 2025-01-04 19:49:55
+      161 | video      | 2025-01-10 01:43:49
+      173 | text       | 2025-01-11 08:51:11
+       23 | text       | 2025-01-11 12:22:41
+       28 | image      | 2025-01-12 08:46:16
+      100 | image      | 2025-01-12 14:33:56
+       44 | image      | 2025-01-12 15:29:26
+      134 | video      | 2025-01-19 14:35:41
+       30 | image      | 2025-01-23 04:15:31
+      167 | image      | 2025-01-24 20:01:46
+       79 | video      | 2025-01-25 06:48:17
+      176 | image      | 2025-01-28 16:22:53
+(99 rows)
+
+Time: 9.173 ms
+PREPARE
+Time: 1.627 ms
+ campaign_id |                 name                  |    name    
+-------------+---------------------------------------+------------
+          13 | Dubai Luxury Shopping Festival        | Google Ads
+           5 | Family Fun in Eilat                   | Google Ads
+           6 | Romantic Paris Getaway                | Google Ads
+          16 | Pilgrimage to Jerusalem               | Google Ads
+           1 | Holy Land Heritage Tour               | Google Ads
+          19 | Ancient Wonders of Egypt              | Google Ads
+           7 | Cherry Blossom Japan Tour             | Google Ads
+           2 | Discover the Alps – Winter Ski Season | Google Ads
+           3 | Summer Escape Greece 2025             | Google Ads
+          12 | Safari Experience Kenya               | Google Ads
+           9 | Adventure Awaits in South America     | Google Ads
+          14 | Northern Lights Iceland Adventure     | Google Ads
+          17 | Summer in Spain – Barcelona & Madrid  | Google Ads
+           8 | Explore Italy’s Wine Country          | Google Ads
+          10 | Island Hopping Thailand               | Google Ads
+          18 | Canadian Rockies Explorer             | Google Ads
+(16 rows)
+
+Time: 10.745 ms
+PREPARE
+Time: 1.277 ms
+ channel_id | channel_name | total_impressions | total_clicks 
+------------+--------------+-------------------+--------------
+          2 | Website      |       19862124695 |    507979432
+(1 row)
+
+Time: 53.364 ms
+PREPARE
+Time: 0.400 ms
+ campaign_id |        name         | avg_revenue 
+-------------+---------------------+-------------
+           5 | Family Fun in Eilat |  2443498.22
+(1 row)
+
+Time: 4.034 ms
+Timing is off.

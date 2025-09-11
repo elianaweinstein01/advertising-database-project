@@ -1,0 +1,59 @@
+Pager usage is off.
+=== Q1 (SELECT): This query finds all campaigns that ran ads on Instagram Reels (channel_id = 3). ===
+Timing is on.
+ campaign_id |           campaign_name           | flight_start | flight_end 
+-------------+-----------------------------------+--------------+------------
+           1 | Holy Land Heritage Tour           | 2023-06-23   | 2023-10-07
+           3 | Summer Escape Greece 2025         | 2025-12-19   | 2026-01-11
+           3 | Summer Escape Greece 2025         | 2025-12-26   | 2026-01-18
+           3 | Summer Escape Greece 2025         | 2025-12-31   | 2026-01-16
+           4 | Mediterranean Cruise Specials     | 2025-02-03   | 2025-04-17
+           4 | Mediterranean Cruise Specials     | 2025-03-03   | 2025-03-15
+           6 | Romantic Paris Getaway            | 2025-03-13   | 2025-05-12
+           7 | Cherry Blossom Japan Tour         | 2023-07-28   | 2023-08-24
+           9 | Adventure Awaits in South America | 2024-03-11   | 2024-03-21
+           9 | Adventure Awaits in South America | 2024-04-13   | 2024-04-30
+          10 | Island Hopping Thailand           | 2023-09-13   | 2023-09-29
+          11 | Fall Colors in New England        | 2023-05-22   | 2023-07-18
+          12 | Safari Experience Kenya           | 2023-03-11   | 2023-05-20
+          12 | Safari Experience Kenya           | 2023-04-01   | 2023-05-01
+          14 | Northern Lights Iceland Adventure | 2024-03-12   | 2024-06-08
+          20 | Scandinavia Midnight Sun Tour     | 2023-05-11   | 2023-05-29
+(16 rows)
+
+Time: 12.923 ms
+Timing is off.
+=== Q2 (UPDATE): +10% budget for campaigns with bookings in last 30 days ===
+Timing is off.
+BEGIN
+Timing is on.
+UPDATE 15
+Time: 22.073 ms
+Timing is off.
+ROLLBACK
+=== Q3 (SELECT): Bookings by campaign from newspaper ads (channel_id = 1). ===
+Timing is on.
+ campaign_id |           campaign_name           | total_bookings 
+-------------+-----------------------------------+----------------
+          20 | Scandinavia Midnight Sun Tour     |           4708
+          12 | Safari Experience Kenya           |           3851
+          15 | Backpacking the Balkans           |           3022
+           6 | Romantic Paris Getaway            |           2873
+           5 | Family Fun in Eilat               |           2849
+          18 | Canadian Rockies Explorer         |           2777
+           9 | Adventure Awaits in South America |           2638
+          16 | Pilgrimage to Jerusalem           |           1967
+           7 | Cherry Blossom Japan Tour         |           1930
+          19 | Ancient Wonders of Egypt          |           1897
+          14 | Northern Lights Iceland Adventure |           1803
+          10 | Island Hopping Thailand           |           1065
+           3 | Summer Escape Greece 2025         |            993
+          13 | Dubai Luxury Shopping Festival    |            950
+           1 | Holy Land Heritage Tour           |            920
+           8 | Explore Italy’s Wine Country      |            916
+           4 | Mediterranean Cruise Specials     |            907
+          11 | Fall Colors in New England        |            833
+(18 rows)
+
+Time: 43.730 ms
+Timing is off.

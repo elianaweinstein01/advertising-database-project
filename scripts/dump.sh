@@ -25,3 +25,4 @@ pg_dump -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PGDATABASE" > "$OUTFILE"
 echo "Dump created: $OUTFILE"
 
 
+/var/folders/7t/wsfjs0v17rj223sfwbty4nlw0000gn/T/TemporaryItems/NSIRD_screencaptureui_IxSi46/Screenshot 2025-09-07 at 17.11.15.png
