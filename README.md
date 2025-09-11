@@ -133,6 +133,13 @@ I first clear the schema to prove the restore works:
 Then I run pg_restore from the custom backup to rebuild schema + data.
 - `./scripts/restore_psql.sh`
 
+### Database Dump with LFS
+- A compressed binary dump of the database `(travel_ads_20250911.dump)` was created using pg_dump in custom format (-Fc).
+- This format is space-efficient and optimized for restoring with pg_restore.
+- Since binary dumps can be large, the file is tracked using Git Large File Storage (Git-LFS) to avoid bloating the repository while still keeping the dump versioned.
+- You can find the ***dump*** in: `dumps/travel_ads_20250911.dump`
+- To ***restore*** this database: `pg_restore -U postgres -d travel_ads dumps/travel_ads_20250911.dump`
+
 ## Queries and Parameterized Queries
 This section documents the user-driven queries written for the database inlcuding joins, aggregates, grouping, ordering, subqueries, and constraints. 
 
