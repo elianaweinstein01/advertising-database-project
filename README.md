@@ -334,6 +334,8 @@ Tests:
 - **UPDATE** row to paused → failed with CHECK OPTION error.
 - **DELETE** through the view → succeeded, rolled back.
 - **INSERT** with status='paused' → failed as expected.
+
+![View Example 1](views1_sc.png)
 ________________________________________________________________
 
 ### View 2: `video_assets_v`
@@ -354,6 +356,8 @@ Tests:
 - **INSERT** with asset_type='image' → rejected.
 - **UPDATE** to set duration_sec = 0 → rejected.
 - **DELETE** through the view → succeeded, rolled back.
+
+![View Example 2](views2_sc.png)
 ________________________________________________________________
 
 ### View 3: `usd_budgets_v`
@@ -373,6 +377,8 @@ Tests:
 - **INSERT** with currency='EUR' → rejected by CHECK OPTION.
 - **UPDATE** amount to negative → rejected.
 - **DELETE** a USD budget → succeeded, rolled back.
+
+![View Example 3](views3_sc.png)
 ________________________________________________________________
 
 ### View 4: `reels_placements_v`
@@ -393,6 +399,8 @@ Tests:
 - **INSERT** a new placement with channel_id=3 → succeeded, rolled back.
 - **UPDATE** channel to 1 → rejected.
 - **DELETE** through the view → succeeded, rolled back.
+
+![View Example 4](views4_sc.png)
 
 ### Visualizations
 
@@ -436,6 +444,8 @@ Using functions provides:
 | No function   | 262.239   | Baseline execution  |
 | With function | 70.699    | ~73% faster         |
 
+![Function Example 1](function1_sc.png)
+
 ________________________________________________________________
 
 ### Function 2: `f_vendor_revenue()`
@@ -449,6 +459,7 @@ ________________________________________________________________
 | No function   | 28.255    | Baseline execution  |
 | With function | 55.060    | Slightly slower     |
 
+![Function Example 2](function3_sc.png)
 ________________________________________________________________
 
 ### Function 3: `f_campaign_daily_bookings(p_campaign_id int)`
@@ -476,6 +487,8 @@ ________________________________________________________________
 |---------------|-----------|--------------------|
 | No function   | 3.185     | Baseline execution |
 | With function | 1.712     | ~46% faster        |
+
+![Function Example 3](function6_sc.png)
 
 ________________________________________________________________
 
