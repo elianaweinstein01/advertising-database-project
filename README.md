@@ -103,9 +103,9 @@ I documented this process with screenshots of prompts and results, showing how t
 
 ## Dump
 
-![Dump Screenshots](dump_ss_1.png)
-![Dump Screenshots](dump_ss_3.png)
-![Dump Screenshots](dump_ss_2.png)
+![Dump Screenshots](screenshots/dump_ss_1.png)
+![Dump Screenshots](screenshots/dump_ss_3.png)
+![Dump Screenshots](screenshots/dump_ss_2.png)
 
 
 # Stage 2
