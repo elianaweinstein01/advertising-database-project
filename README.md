@@ -39,10 +39,10 @@ A travel agency runs many marketing campaigns across multiple media (newspapers,
 - **SQL schema**: `schema.sql` (PostgreSQL `CREATE TABLE` statements).
 
 ### ERD Diagram
-![ERD Diagram](erdplus.png)
+![ERD Diagram](diagrams/erdplus.png)
 
 ### DSD Diagram
-![DSD Diagram](DSD_diagram.png)
+![DSD Diagram](diagrams/DSD_diagram.png)
 
 
 ## Data Generation Process
@@ -67,25 +67,25 @@ I documented this process with screenshots of prompts and results, showing how t
 ## Screenshots
 
 ### Campaign Prompt
-![Campaign Prompt](campaign_prompt.png)
+![Campaign Prompt](screenshots/campaign_prompt.png)
 
 ### Channels Prompt
-![Channels Prompt](channels_prompt.png)
+![Channels Prompt](screenshots/channels_prompt.png)
 
 ### Vendors Prompt
-![Vendors Prompt](vendors_prompt.png)
+![Vendors Prompt](screenshots/vendors_prompt.png)
 
 ### CreativeAssets Prompt
-![CreativeAssets Prompt](creative_asset_prompt.png)
+![CreativeAssets Prompt](screenshots/creative_asset_prompt.png)
 
 ### Placements Prompt
-![Placements Prompt](placements_prompt_1.png)
+![Placements Prompt](screenshots/placements_prompt_1.png)
 
 ### BudgetAllocations Prompt
-![BudgetAllocations Prompt](budget_allocation_prompt.png)
+![BudgetAllocations Prompt](screenshots/budget_allocation_prompt.png)
 
 ### PerformanceMetrics Prompt
-![PerformanceMetrics Prompt](performance_metrics_prompt.png)
+![PerformanceMetrics Prompt](screenshots/performance_metrics_prompt.png)
 
 ## Creating Tables and Inputing CSV data I created
 - ***Schema.sql*** : includes all the "CREATE TABLES" for my schema and ran it.
@@ -223,7 +223,7 @@ I created three custom indexes in Constraints.sql:
 - Logged results into ***Constraints.log***
 - Re-ran queries into ***Queries_after_index.log***: "psql -h localhost -p 5432 -U postgres -d travel_ads -f Queries.sql > Queries_after_index.log 2>&1"
 - Used grep to extract query times for easy comparison
-![Before and After Screenshots](beforeandafter.png)
+![Before and After Screenshots](screenshots/beforeandafter.png)
 
 ### Indexing Results Summary
 
@@ -279,9 +279,9 @@ In this stage of the project, I strengthened the database schema by adding ancil
 
 ### Step 3: Captured Logs:
 - I ran the script using: psql -h localhost -p 5432 -U postgres -d travel_ads -f Constraints.sql 2>&1 | tee constraints.log
-- ![Constraints Screenshots](constraints-sc-1.png)
+- ![Constraints Screenshots](screenshots/constraints-sc-1.png)
 - This produced a log file (constraints.log) with both commands and error messages.
-- ![Constraints Screenshots](constraints-cs-2.png)
+- ![Constraints Screenshots](screenshots/constraints-cs-2.png)
 
 ## ERROR and message explanations (from constraints.log)
 - ALTER TABLE (multiple lines)
@@ -347,7 +347,7 @@ Tests:
 - **DELETE** through the view → succeeded, rolled back.
 - **INSERT** with status='paused' → failed as expected.
 
-![View Example 1](views1_sc.png)
+![View Example 1](screenshots/views1_sc.png)
 ________________________________________________________________
 
 ### View 2: `video_assets_v`
@@ -369,7 +369,7 @@ Tests:
 - **UPDATE** to set duration_sec = 0 → rejected.
 - **DELETE** through the view → succeeded, rolled back.
 
-![View Example 2](views2_sc.png)
+![View Example 2](screenshots/views2_sc.png)
 ________________________________________________________________
 
 ### View 3: `usd_budgets_v`
@@ -390,7 +390,7 @@ Tests:
 - **UPDATE** amount to negative → rejected.
 - **DELETE** a USD budget → succeeded, rolled back.
 
-![View Example 3](views3_sc.png)
+![View Example 3](screenshots/views3_sc.png)
 ________________________________________________________________
 
 ### View 4: `reels_placements_v`
@@ -412,7 +412,7 @@ Tests:
 - **UPDATE** channel to 1 → rejected.
 - **DELETE** through the view → succeeded, rolled back.
 
-![View Example 4](views4_sc.png)
+![View Example 4](screenshots/views4_sc.png)
 
 ### Visualizations
 
@@ -424,7 +424,7 @@ SELECT
 FROM campaigns
 GROUP BY campaign_status;
 ```
-![Bar Chart](barChart.png)
+![Bar Chart](screenshots/barChart.png)
 
 **Video Assets Compliance Status (Pie Chart)**
 ```sql
@@ -432,7 +432,7 @@ SELECT compliance_ok, COUNT(*) AS num_assets
 FROM video_assets_v
 GROUP BY compliance_ok;
 ```
-![Pie Chart](pieChart.png)
+![Pie Chart](screenshots/pieChart.png)
 
 ## SQL Functions
 
@@ -471,7 +471,7 @@ ________________________________________________________________
 | No function   | 28.255    | Baseline execution  |
 | With function | 55.060    | Slightly slower     |
 
-![Function Example 2](function3_sc.png)
+![Function Example 2](screenshots/function3_sc.png)
 ________________________________________________________________
 
 ### Function 3: `f_campaign_daily_bookings(p_campaign_id int)`
@@ -500,7 +500,7 @@ ________________________________________________________________
 | No function   | 3.185     | Baseline execution |
 | With function | 1.712     | ~46% faster        |
 
-![Function Example 3](function6_sc.png)
+![Function Example 3](screenshots/function6_sc.png)
 
 ________________________________________________________________
 
