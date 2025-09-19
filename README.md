@@ -456,7 +456,7 @@ Using functions provides:
 | No function   | 262.239   | Baseline execution  |
 | With function | 70.699    | ~73% faster         |
 
-![Function Example 1](function1_sc.png)
+![Function Example 1](screenshots/function1_sc.png)
 
 ________________________________________________________________
 
