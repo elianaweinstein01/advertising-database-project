@@ -39,7 +39,7 @@ A travel agency runs many marketing campaigns across multiple media (newspapers,
 - **SQL schema**: `schema.sql` (PostgreSQL `CREATE TABLE` statements).
 
 ### ERD Diagram
-![ERD Diagram](diagrams/erdplus.png)
+![ERD Diagram](diagrams/erdplus-updated.png)
 
 ### DSD Diagram
 ![DSD Diagram](diagrams/DSD_diagram.png)
