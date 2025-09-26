@@ -549,7 +549,7 @@ To solve this, I (and with the help of chat GPT) created INSTEAD OF triggers for
 
 ### files
 - `views-stage4.sql` : sql code of views, triggers and queries
-- `stage4_views.log1 : log file
+- `stage4_views.log1` : log file
 
 
 
