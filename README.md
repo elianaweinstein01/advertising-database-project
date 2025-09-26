@@ -522,7 +522,7 @@ Functions: sql code for function creation
 ![View 2 Insert](screenshots/view1_insert.png)
 ### UPDATE
 ![View 3 Update](screenshots/view1_update.png)
-### INSERT
+### DELETE
 ![View 4 Delete](screenshots/view1_delete.png)
 
 ### View 2:
@@ -536,7 +536,7 @@ Functions: sql code for function creation
 ![View 2 Insert](screenshots/view2_insert.png)
 ### UPDATE
 ![View 2 Update](screenshots/view2_update.png)
-### INSERT
+### DELETE
 ![View 2 Delete](screenshots/view2_delete.png)
 
 ### Making the Views Updatable with Triggers
