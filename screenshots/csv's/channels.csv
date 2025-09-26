@@ -1,0 +1,11 @@
+channel_id,channel_name,subtype,rate_model
+1,Newspaper,,FLAT
+2,Website,,CPM
+3,Instagram,Reels,CPM
+4,Instagram,Stories,CPM
+5,TikTok,Shorts,CPM
+6,Google Search,,CPC
+7,YouTube,Pre-Roll,CPM
+8,Email,,FLAT
+9,Radio,,FLAT
+10,TV,Prime Time,CPM

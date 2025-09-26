@@ -1,0 +1,101 @@
+Pager usage is off.
+Timing is on.
+CREATE VIEW
+Time: 50.575 ms
+CREATE FUNCTION
+Time: 44.272 ms
+DROP TRIGGER
+Time: 5.889 ms
+CREATE TRIGGER
+Time: 3.377 ms
+=== V1 (SELECT): Show first 10 attributions ===
+ booking_id | booking_date | customer_id |   customer_name    |        contact_info         | placement_id | campaign_id |            campaign_name             | channel_id | channel_name | subtype 
+------------+--------------+-------------+--------------------+-----------------------------+--------------+-------------+--------------------------------------+------------+--------------+---------
+      57013 | 2025-09-11   |      181872 | Christopher Cooley | isaiahwarren@example.net    |           55 |           6 | Romantic Paris Getaway               |          8 | Email        | 
+     313975 | 2025-09-11   |      185075 | Sheila Meyer       | robinsonrichard@example.org |          713 |          20 | Scandinavia Midnight Sun Tour        |          2 | Website      | 
+     371052 | 2025-09-11   |      151572 | Michael Perkins    | angelaroberts@example.org   |           26 |          10 | Island Hopping Thailand              |          5 | TikTok       | Shorts
+     303586 | 2025-09-11   |      179474 | Gavin Durham       | vegajasmin@example.com      |          936 |          14 | Northern Lights Iceland Adventure    |          8 | Email        | 
+     200619 | 2025-09-11   |      199661 | Thomas Schmidt     | harrissteven@example.org    |          810 |          17 | Summer in Spain – Barcelona & Madrid |          8 | Email        | 
+       2796 | 2025-09-11   |      135883 | David Cox          | annastark@example.net       |          329 |          17 | Summer in Spain – Barcelona & Madrid |          2 | Website      | 
+     222248 | 2025-09-11   |       90888 | Joseph Russo       | maria46@example.org         |          243 |          20 | Scandinavia Midnight Sun Tour        |          5 | TikTok       | Shorts
+     256847 | 2025-09-11   |      137837 | Morgan Gomez       | gabriela59@example.net      |          102 |           3 | Summer Escape Greece 2025            |          8 | Email        | 
+     257473 | 2025-09-11   |      124961 | Tammy Bass         | dawnkim@example.net         |          703 |          14 | Northern Lights Iceland Adventure    |          8 | Email        | 
+      90511 | 2025-09-11   |      108563 | Michael Everett    | bridgesjoshua@example.net   |          158 |          13 | Dubai Luxury Shopping Festival       |          2 | Website      | 
+(10 rows)
+
+Time: 292.183 ms
+=== V1 (INSERT valid): add one booking→placement attribution (then ROLLBACK) ===
+BEGIN
+Time: 0.204 ms
+INSERT 0 1
+Time: 5.111 ms
+ROLLBACK
+Time: 0.148 ms
+=== V1 (UPDATE valid): move that booking to a different placement (then ROLLBACK) ===
+BEGIN
+Time: 0.075 ms
+UPDATE 0
+Time: 0.678 ms
+ROLLBACK
+Time: 0.071 ms
+=== V1 (DELETE valid): remove that attribution (then ROLLBACK) ===
+BEGIN
+Time: 0.069 ms
+DELETE 0
+Time: 0.372 ms
+ROLLBACK
+Time: 0.062 ms
+DROP VIEW
+Time: 2.091 ms
+CREATE VIEW
+Time: 3.715 ms
+CREATE FUNCTION
+Time: 0.268 ms
+psql:views-stage4.sql:154: NOTICE:  trigger "trg_customer_channel_dml" for relation "public.customer_channel_age_v" does not exist, skipping
+DROP TRIGGER
+Time: 0.654 ms
+CREATE TRIGGER
+Time: 0.237 ms
+=== V2 (SELECT): sample customers with channel context ===
+ customer_id |  customer_name   | date_of_birth | channel_name | subtype 
+-------------+------------------+---------------+--------------+---------
+           1 | Derrick Mcdonald | 1992-03-19    | Website      | 
+           2 | Joseph Rogers    | 1950-07-09    | Email        | 
+           2 | Joseph Rogers    | 1950-07-09    |              | 
+           3 | Kevin Richardson | 1969-10-15    |              | 
+           3 | Kevin Richardson | 1969-10-15    |              | 
+           4 | Sarah Evans      | 1999-02-03    |              | 
+           5 | David Gill       | 1977-02-20    | Newspaper    | 
+           5 | David Gill       | 1977-02-20    |              | 
+           6 | Kristen Fisher   | 1947-07-25    |              | 
+           6 | Kristen Fisher   | 1947-07-25    |              | 
+(10 rows)
+
+Time: 192.610 ms
+=== V2 (INSERT via view): add a customer (then ROLLBACK) ===
+BEGIN
+Time: 0.159 ms
+INSERT 0 1
+Time: 1.219 ms
+ROLLBACK
+Time: 0.094 ms
+=== V2 (UPDATE via view): correct date_of_birth (then ROLLBACK) ===
+BEGIN
+Time: 0.063 ms
+UPDATE 3
+Time: 20.912 ms
+ROLLBACK
+Time: 0.138 ms
+=== V2 (DELETE via view): delete a customer (then ROLLBACK) ===
+BEGIN
+Time: 0.103 ms
+DELETE 0
+Time: 1.271 ms
+ customer_id |      name      |     contact_info     | date_of_birth 
+-------------+----------------+----------------------+---------------
+     1000003 | Temp To Delete | temp.del@example.com | 1990-01-01
+(1 row)
+
+Time: 0.121 ms
+ROLLBACK
+Time: 0.101 ms
