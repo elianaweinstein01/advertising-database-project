@@ -43,7 +43,7 @@ BEGIN
 
     INSERT INTO public.booking_attribution(booking_id, placement_id)
     VALUES (NEW.booking_id, NEW.placement_id)
-    ON CONFLICT DO NOTHING;            -- idempotent
+    ON CONFLICT DO NOTHING;
 
     RETURN NEW;
 
@@ -178,12 +178,11 @@ ROLLBACK;
 \echo === V2 (UPDATE via view): correct date_of_birth (then ROLLBACK) ===
 BEGIN;
 
--- Change the contact info of a known customer
 UPDATE public.customer_channel_age_v
 SET contact_info = 'updated_email@example.com'
 WHERE customer_id = 9999;
 
-ROLLBACK; -- undo the change for safety
+ROLLBACK;
 
 
 
