@@ -509,6 +509,49 @@ stage3_functions_queries.log : comparison of queries without functions and the s
 Queries.sql : editied this file to contain queries with functions
 Functions: sql code for function creation
 
+# Stage 4
+
+## Views for Merged Database
+
+### View 1:
+- ***Purpose & Use Case:*** This view gives the marketing/advertising team a single, joined view of how each customer booking is tied back to a specific ad placement, campaign, and channel. Instead of manually joining six different tables (`booking_attribution` (new relation I craeted to merge databases), `booking`, `customer`, `placements`, `campaigns`, and `channels`), analysts can query this view directly to see which campaigns are driving bookings, which placements and channels are most effective, who the customer was (name + contact info) for follow-up or retargeting etc.
+
+### SELECT
+![View 1 Select](screenshots/view1_select.png)
+### INSERT
+![View 2 Insert](screenshots/view1_insert.png)
+### UPDATE
+![View 3 Update](screenshots/view1_update.png)
+### INSERT
+![View 4 Delete](screenshots/view1_delete.png)
+
+### View 2:
+- ***Purpose & Use Case:*** This view links customer demographic information (name, contact info, date of birth) with the channels and subtypes they interacted with through ad placements. This allows the advertising team to analyze which customer segments are using which channels, enabling better audience targeting for future campaigns.
+- ***Makes segmentation easy***: analysts can filter by date_of_birth (or calculate age) and instantly see the associated channel_name and subtype.
+- ***Marketing Strategists*** Can plan campaigns targeting specific age groups on the channels they use most.
+
+### SELECT
+![View 2 Select](screenshots/view2_select.png)
+### INSERT
+![View 2 Insert](screenshots/view2_insert.png)
+### UPDATE
+![View 2 Update](screenshots/view2_update.png)
+### INSERT
+![View 2 Delete](screenshots/view2_delete.png)
+
+### Making the Views Updatable with Triggers
+- Normally, PostgreSQL only allows updates through a view if the view is simple (selecting from one table, no joins, no aggregates).
+Both of our views (attributed_bookings_v and customer_channel_age_v) join multiple tables, so they are not automatically updatable.
+To solve this, I (and with the help of chat GPT) created INSTEAD OF triggers for each view.
+***How It Works***
+- INSTEAD OF Trigger: Tells PostgreSQL what to do when someone tries to INSERT, UPDATE, or DELETE on the view.
+- Instead of failing, PostgreSQL calls our trigger function, which manually applies the change to the underlying base table(s).
+
+### files
+- `views-stage4.sql` : sql code of views, triggers and queries
+- `stage4_views.log1 : log file
+
+
 
   
 
