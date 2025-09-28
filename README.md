@@ -581,7 +581,10 @@ To solve this, I (and with the help of chat GPT) created INSTEAD OF triggers for
 
 ### files
 - `queries-stage4.sql` : sql code of queries.
-- `queries-stage4.log` : log file with output and timing. 
+- `queries-stage4.log` : log file with output and timing.
+
+## Create Table Script
+file: create_tables.sql
 
 
 
