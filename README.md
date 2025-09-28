@@ -501,6 +501,24 @@ Functions: sql code for function creation
 
 # Stage 4
 
+## Merged Databases (Advertising + Bookings)
+
+- I merged my **advertising database** with the **bookings database** to connect ad performance with real customer actions. Before the merge, I could measure impressions, clicks, and revenue at the campaign level, but I had no direct way to see which customers or bookings were influenced by specific ad placements.
+- To achieve this, I created a new bridge table, `booking_attribution`, which links each booking to the placement that drove it. This allows me to:
+1) Track ad effectiveness at the customer level (not just aggregated revenue).
+2) Run attribution reports to see which channels, campaigns, and vendors drive what specific bookings.
+3) Enable CRM (Customer Relationship Management) follow-ups, targeting customers who booked through specific campaigns.
+4) Learn knew information that can help with future ad campaigns (i.e. customer age correlations)
+
+- This new table is central to integrating marketing data with operational booking data, enabling much deeper insights and actionable reporting.
+- `booking_attribution` : key = (`placement_id` (from the advertising database), `booking_id` (from the bookings database))
+### Original Advertising ERD
+![View 1 Select](diagrams/AdsERD.png)
+### Original Bookings ERD
+![View 1 Select](diagrams/BookingERD.png)
+### Merged ERD (Advertising + Bookings)
+![View 1 Select](diagrams/mergedERD.png)
+
 ## Views for Merged Database
 
 ### View 1:
@@ -562,7 +580,6 @@ To solve this, I (and with the help of chat GPT) created INSTEAD OF triggers for
 ### files
 - `queries-stage4.sql` : sql code of queries.
 - `queries-stage4.log` : log file with output and timing. 
-
 
 
 
