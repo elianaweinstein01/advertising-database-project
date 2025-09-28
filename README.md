@@ -1,8 +1,8 @@
 # advertising-database-project
 My project for my mini project in database systems class
 
-## Stage 1: 
-### Proposal
+# Stage 1: 
+## Proposal
 
 ### Problem & Goal
 A travel agency runs many marketing campaigns across multiple media (newspapers, web, social, email). Each campaign can use several vendors and creatives, must stay within a budget, and needs performance tracking to see which spend actually drives bookings.  
@@ -297,7 +297,6 @@ Meaning: Cleanup delete of the test campaign succeeded (and cascades ran as defi
 ### Files
 - Constraints.sql: Contains all ALTER TABLE statements and test queries.
 - constraints.log: Log file capturing all inputs and outputs.
-________________________________________________________________
 
 # Stage 3
 
@@ -306,19 +305,19 @@ ________________________________________________________________
 ### `Q1` – Campaigns that ran on Instagram Reels
 - ***What it does***: Finds all campaigns that ran on Instagram Reels, using channel_id = 3 (no need to join the channels table). Returns campaign name and the flight start/end dates.
 - ***Time***: 4.873 ms
-  ________________________________________________________________
+
 ### `Q2` – Increase budget by 10% for campaigns with bookings in last 30 days
 - ***What it does***: Checks for campaigns that had at least one confirmed booking in the last 30 days and increases their budget by 10%. A transaction wrapper is used so we can test with ROLLBACK first.
 - ***Time***: 87.242 ms
-________________________________________________________________
+
 ### `Q3` – Bookings by campaign from newspaper ads
 - ***What it does***: Aggregates confirmed bookings from placements that ran in newspaper ads (channel_id = 1), grouped by campaign. Shows which campaigns generated the most bookings from newspapers.
 - ***Time***: 52.117 ms
-________________________________________________________________
+
 ### Files:
 - `Stage3_Queries.sql` : SQL code
 - `stage3_queries.log` : output
-________________________________________________________________
+
 ## Stage 3: Views
 
 In this stage, we created **four SQL views** to serve the needs of different user groups.  
@@ -348,7 +347,6 @@ Tests:
 - **INSERT** with status='paused' → failed as expected.
 
 ![View Example 1](screenshots/views1_sc.png)
-________________________________________________________________
 
 ### View 2: `video_assets_v`
 - **Purpose:** Show only creative assets that are videos with a valid (positive) duration.
@@ -370,7 +368,6 @@ Tests:
 - **DELETE** through the view → succeeded, rolled back.
 
 ![View Example 2](screenshots/views2_sc.png)
-________________________________________________________________
 
 ### View 3: `usd_budgets_v`
 - **Purpose:** Show only budgets in USD with positive amounts.
@@ -391,7 +388,6 @@ Tests:
 - **DELETE** a USD budget → succeeded, rolled back.
 
 ![View Example 3](screenshots/views3_sc.png)
-________________________________________________________________
 
 ### View 4: `reels_placements_v`
 - **Purpose:** Show only placements that run on Instagram Reels (channel_id = 3).
@@ -458,8 +454,6 @@ Using functions provides:
 
 ![Function Example 1](screenshots/function1_sc.png)
 
-________________________________________________________________
-
 ### Function 2: `f_vendor_revenue()`
 - Replaces `Q3`: Vendor revenue totals.
 - Returns each vendor’s total revenue in descending order.
@@ -472,7 +466,6 @@ ________________________________________________________________
 | With function | 55.060    | Slightly slower     |
 
 ![Function Example 2](screenshots/function3_sc.png)
-________________________________________________________________
 
 ### Function 3: `f_campaign_daily_bookings(p_campaign_id int)`
 - Replaces `Q4`: Daily confirmed bookings for one campaign.
@@ -486,7 +479,6 @@ ________________________________________________________________
 | No function   | 16.599    | Baseline execution            |
 | With function | 16.216    | Performance nearly identical  |
 
-________________________________________________________________
 
 ### Function 4: `f_bump_active_budgets(p_percent numeric)`
 - Replaces `Q6`: Increase budget allocations for active campaigns
@@ -501,8 +493,6 @@ ________________________________________________________________
 | With function | 1.712     | ~46% faster        |
 
 ![Function Example 3](screenshots/function6_sc.png)
-
-________________________________________________________________
 
 ### files
 stage3_functions_queries.log : comparison of queries without functions and the same queries substitutued with a function
@@ -548,8 +538,31 @@ To solve this, I (and with the help of chat GPT) created INSTEAD OF triggers for
 - Instead of failing, PostgreSQL calls our trigger function, which manually applies the change to the underlying base table(s).
 
 ### files
-- `views-stage4.sql` : sql code of views, triggers and queries
-- `stage4_views.log1` : log file
+- `views-stage4.sql` : sql code of views, triggers and queries.
+- `stage4_views.log1` : log file.
+
+## Queries on Merged Views
+
+### View 1 (attributed_bookings_v):
+
+- ***Q1***: Customer-Level Attribution Report: his query lists all customers who booked through a given campaign. It is very useful for CRM teams to send follow-up emails, offer loyalty discounts, or measure the performance of a specific campaign at a customer level.
+![Query 1](screenshots/v1-q1.png)
+
+- ***Q1***: This aggregates booking counts by channel and subtype for the quarter. This is valuable for marketing and analytics teams, they can see which platforms (e.g., Instagram, Search Ads) and which creative formats are generating the most bookings, informing future ad spend.
+![Query 2](screenshots/v1-q2.png)
+
+### View 2 (customer_channel_age_v):
+
+- ***Q3***: This query segments customers into age groups and shows which channels/subtypes they use. This is ideal for ad targeting decisions, letting the team focus campaigns on where each demographic is most active.
+![Query 1](screenshots/v2-q3.png)
+
+- ***Q4***: This query identifies customers who have engaged with both Instagram and Newspaper channels by grouping their interactions and filtering for those with more than one distinct channel match. It helps the marketing team pinpoint multi-channel customers, the ones exposed to campaigns on different platforms, which is crucial for measuring cross-channel attribution and optimizing ad spend. By focusing on these users, the team can test whether exposure on multiple channels leads to higher booking rates, and adjust strategy accordingly.
+![Query 2](screenshots/v2-q4.png)
+
+### files
+- `queries-stage4.sql` : sql code of queries.
+- `queries-stage4.log` : log file with output and timing. 
+
 
 
 
