@@ -284,14 +284,10 @@ In this stage of the project, I strengthened the database schema by adding ancil
 - ![Constraints Screenshots](screenshots/constraints-cs-2.png)
 
 ## ERROR and message explanations (from constraints.log)
-- ALTER TABLE (multiple lines)
-Meaning: All constraint DDL statements executed successfully (no errors here).
-- psql:Constraints.sql:89: ERROR: new row for relation "relation" violates check constraint "chk_constraint" (multiple times).
-Meaning: the constraints that I added were violated (intentionally)
-- INSERT 0 1 (right after the above)
-Meaning: The setup campaign for the budget tests inserted successfully.
-- DELETE 1
-Meaning: Cleanup delete of the test campaign succeeded (and cascades ran as defined).
+- `ALTER TABLE` (multiple lines) : Meaning: All constraint DDL statements executed successfully (no errors here).
+- `psql:Constraints.sql:89:` ERROR: new row for relation "relation" violates check constraint "chk_constraint" (multiple times) : Meaning: the constraints that I added were violated (intentionally)
+- `INSERT 0 1` (right after the above) : Meaning: The setup campaign for the budget tests inserted successfully.
+- `DELETE 1` : Meaning: Cleanup delete of the test campaign succeeded (and cascades ran as defined).
 ### All failing statements intentionally triggered the new CHECK constraints, confirming they work; setup/cleanup statements behaved correctly, including cascade deletes.
 
 ### Files
@@ -556,7 +552,7 @@ Functions: sql code for function creation
 - Normally, PostgreSQL only allows updates through a view if the view is simple (selecting from one table, no joins, no aggregates).
 Both of our views (attributed_bookings_v and customer_channel_age_v) join multiple tables, so they are not automatically updatable.
 To solve this, I (and with the help of chat GPT) created INSTEAD OF triggers for each view.
-***How It Works***
+### How It Works
 - INSTEAD OF Trigger: Tells PostgreSQL what to do when someone tries to INSERT, UPDATE, or DELETE on the view.
 - Instead of failing, PostgreSQL calls our trigger function, which manually applies the change to the underlying base table(s).
 
