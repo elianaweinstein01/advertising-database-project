@@ -305,14 +305,17 @@ Meaning: Cleanup delete of the test campaign succeeded (and cascades ran as defi
 ### `Q1` – Campaigns that ran on Instagram Reels
 - ***What it does***: Finds all campaigns that ran on Instagram Reels, using channel_id = 3 (no need to join the channels table). Returns campaign name and the flight start/end dates.
 - ***Time***: 4.873 ms
+- ![Query 1 Screenshots](screenshots/stage3-q1.png)
 
 ### `Q2` – Increase budget by 10% for campaigns with bookings in last 30 days
 - ***What it does***: Checks for campaigns that had at least one confirmed booking in the last 30 days and increases their budget by 10%. A transaction wrapper is used so we can test with ROLLBACK first.
 - ***Time***: 87.242 ms
+- ![Query 2 Screenshots](screenshots/stage3-q2.png)
 
 ### `Q3` – Bookings by campaign from newspaper ads
 - ***What it does***: Aggregates confirmed bookings from placements that ran in newspaper ads (channel_id = 1), grouped by campaign. Shows which campaigns generated the most bookings from newspapers.
 - ***Time***: 52.117 ms
+- ![Query 3 Screenshots](screenshots/stage3-q3.png)
 
 ### Files:
 - `Stage3_Queries.sql` : SQL code
@@ -584,7 +587,7 @@ To solve this, I (and with the help of chat GPT) created INSTEAD OF triggers for
 - `queries-stage4.log` : log file with output and timing.
 
 ## Create Table Script
-file: create_tables.sql
+file: stage_4/create_table.sql
 
 
 
