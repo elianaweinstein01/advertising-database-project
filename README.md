@@ -513,11 +513,13 @@ Functions: sql code for function creation
 - This new table is central to integrating marketing data with operational booking data, enabling much deeper insights and actionable reporting.
 - `booking_attribution` : key = (`placement_id` (from the advertising database), `booking_id` (from the bookings database))
 ### Original Advertising ERD
-![View 1 Select](diagrams/AdsERD.png)
+![Advertising ERD](diagrams/AdsERD.png)
 ### Original Bookings ERD
-![View 1 Select](diagrams/BookingERD.png)
+![Booking ERD](diagrams/BookingERD.png)
 ### Merged ERD (Advertising + Bookings)
-![View 1 Select](diagrams/mergedERD.png)
+![Merged ERD](diagrams/mergedERD.png)
+### Merged DSD
+![Merged DSD](diagrams/mergedDSD-updated.png)
 
 ## Views for Merged Database
 
